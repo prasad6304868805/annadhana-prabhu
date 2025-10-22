@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Register Biksha</title>
+<style>
+body {
+  font-family: "Poppins", sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: #fff8e1;
+  margin: 0;
+}
+.container {
+  width: 360px;
+  aspect-ratio: 9/16;
+  background: #fff3e0;
+  border-radius: 25px;
+  padding: 15px;
+  box-shadow: 0 0 25px rgba(0,0,0,0.3);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+}
+.back-btn {
+  align-self: flex-start;
+  padding: 8px 14px;
+  border: none;
+  border-radius: 12px;
+  background: linear-gradient(45deg,#ff7043,#ff9800);
+  color: #fff;
+  cursor: pointer;
+  font-size: 14px;
+  margin-bottom: 10px;
+  transition: all 0.3s ease;
+}
+.back-btn:hover {
+  transform: scale(1.05);
+  background: linear-gradient(45deg,#ff8f00,#ffc107);
+}
+form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+h2 {
+  text-align: center;
+  color: #ff7043;
+  margin-bottom: 15px;
+}
+input {
+  margin: 8px 0;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+}
+button.submit-btn {
+  background: linear-gradient(45deg,#ff7043,#ff9800);
+  border: none;
+  color: #fff;
+  padding: 12px;
+  border-radius: 8px;
+  margin-top: 12px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+button.submit-btn:hover {
+  transform: scale(1.05);
+  background: linear-gradient(45deg,#ff8f00,#ffc107);
+}
+</style>
+</head>
+<body>
+<div class="container">
+  <!-- Back button inside 9:16 frame -->
+  <button class="back-btn" onclick="window.location.href='{{ url_for('biksha') }}'">⬅ Back</button>
+
+  <form action="{{ url_for('add_biksha') }}" method="POST">
+    <h2>Register Biksha</h2>
+    <input type="text" name="head_name" placeholder="Swamy Name" required>
+    <input type="date" name="biksha_date" required>
+    <input type="time" name="biksha_time" required>
+    <input type="tel" name="phone_number" placeholder="Phone Number" required>
+    <input type="text" name="location" placeholder="Location" required>
+    <input type="text" name="near_landmark" placeholder="Near Landmark">
+    <input type="text" name="pincode" placeholder="Pincode">
+    <button type="submit" class="submit-btn">Submit</button>
+  </form>
+</div>
+</body>
+</html>
