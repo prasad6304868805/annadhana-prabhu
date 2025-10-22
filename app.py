@@ -16,7 +16,6 @@ db = mysql.connector.connect(
     password=os.environ.get('DB_PASS'),
     database=os.environ.get('DB_NAME')
 )
->>>>>>> 19ddf71 (Update app.py with Render database changes)
 
 db = SQLAlchemy(app)
 
