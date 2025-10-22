@@ -2,41 +2,45 @@ import os
 from flask import Flask, render_template, request, redirect
 from flask_sqlalchemy import SQLAlchemy
 
+# ------------------------
+# Flask app initialization
+# ------------------------
 app = Flask(__name__)
 
 # ------------------------
-# PostgreSQL configuration
+# Database configuration
 # ------------------------
-# Make sure DATABASE_URL is set in Render environment
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL')
+# Make sure these environment variables are set in Render:
+# DB_HOST, DB_USER, DB_PASS, DB_NAME
+app.config['SQLALCHEMY_DATABASE_URI'] = f"postgresql://{os.environ['DB_USER']}:{os.environ['DB_PASS']}@{os.environ['DB_HOST']}/{os.environ['DB_NAME']}"
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
 
 # ------------------------
-# Models
+# Database Models
 # ------------------------
 class Pooja(db.Model):
     __tablename__ = 'poojas'
     id = db.Column(db.Integer, primary_key=True)
-    head_name = db.Column(db.String(100))
-    pooja_date = db.Column(db.String(20))
-    pooja_time = db.Column(db.String(20))
-    phone_number = db.Column(db.String(20))
-    location = db.Column(db.String(200))
-    near_landmark = db.Column(db.String(200))
-    pincode = db.Column(db.String(20))
+    head_name = db.Column(db.String(100), nullable=False)
+    pooja_date = db.Column(db.String(20), nullable=False)
+    pooja_time = db.Column(db.String(20), nullable=False)
+    phone_number = db.Column(db.String(20), nullable=False)
+    location = db.Column(db.String(200), nullable=False)
+    near_landmark = db.Column(db.String(100), nullable=True)
+    pincode = db.Column(db.String(10), nullable=True)
 
 class Biksha(db.Model):
     __tablename__ = 'biksha'
     id = db.Column(db.Integer, primary_key=True)
-    swamy_name = db.Column(db.String(100))
-    biksha_date = db.Column(db.String(20))
-    biksha_time = db.Column(db.String(20))
-    phone_number = db.Column(db.String(20))
-    location = db.Column(db.String(200))
-    near_landmark = db.Column(db.String(200))
-    pincode = db.Column(db.String(20))
+    swamy_name = db.Column(db.String(100), nullable=False)
+    biksha_date = db.Column(db.String(20), nullable=False)
+    biksha_time = db.Column(db.String(20), nullable=False)
+    phone_number = db.Column(db.String(20), nullable=False)
+    location = db.Column(db.String(200), nullable=False)
+    near_landmark = db.Column(db.String(100), nullable=True)
+    pincode = db.Column(db.String(10), nullable=True)
 
 # ------------------------
 # Routes
@@ -60,8 +64,8 @@ def add_pooja():
             pooja_time=request.form['pooja_time'],
             phone_number=request.form['phone_number'],
             location=request.form['location'],
-            near_landmark=request.form['near_landmark'],
-            pincode=request.form['pincode']
+            near_landmark=request.form.get('near_landmark'),
+            pincode=request.form.get('pincode')
         )
         db.session.add(new_pooja)
         db.session.commit()
@@ -83,8 +87,8 @@ def add_biksha():
             biksha_time=request.form['biksha_time'],
             phone_number=request.form['phone_number'],
             location=request.form['location'],
-            near_landmark=request.form['near_landmark'],
-            pincode=request.form['pincode']
+            near_landmark=request.form.get('near_landmark'),
+            pincode=request.form.get('pincode')
         )
         db.session.add(new_biksha)
         db.session.commit()
@@ -96,6 +100,8 @@ def add_biksha():
 # Run app
 # ------------------------
 if __name__ == '__main__':
-    # On Render, use host='0.0.0.0' and port from environment
-    port = int(os.environ.get('PORT', 5000))
-    app.run(debug=False, host='0.0.0.0', port=port)
+    # Create tables if they don't exist
+    with app.app_context():
+        db.create_all()
+
+    app.run(debug=False, host='0.0.0.0', port=int(os.environ.get('PORT', 5000)))
