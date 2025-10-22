@@ -8,8 +8,17 @@ app = Flask(__name__)
 # ------------------------
 # Database configuration
 # ------------------------
+<<<<<<< HEAD
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+=======
+db = mysql.connector.connect(
+    host=os.environ.get('DB_HOST'),
+    user=os.environ.get('DB_USER'),
+    password=os.environ.get('DB_PASS'),
+    database=os.environ.get('DB_NAME')
+)
+>>>>>>> 19ddf71 (Update app.py with Render database changes)
 
 db = SQLAlchemy(app)
 
