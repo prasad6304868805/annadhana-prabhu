@@ -81,16 +81,16 @@ button.submit-btn:hover {
   <button class="back-btn" onclick="window.location.href='{{ url_for('biksha') }}'">⬅ Back</button>
 
   <form action="{{ url_for('add_biksha') }}" method="POST">
-    <h2>Register Biksha</h2>
-    <input type="text" name="head_name" placeholder="Swamy Name" required>
-    <input type="date" name="biksha_date" required>
-    <input type="time" name="biksha_time" required>
-    <input type="tel" name="phone_number" placeholder="Phone Number" required>
-    <input type="text" name="location" placeholder="Location" required>
-    <input type="text" name="near_landmark" placeholder="Near Landmark">
-    <input type="text" name="pincode" placeholder="Pincode">
-    <button type="submit" class="submit-btn">Submit</button>
-  </form>
+  <h2>Register Biksha</h2>
+  <input type="text" name="swamy_name" placeholder="Swamy Name" required>
+  <input type="date" name="biksha_date" required>
+  <input type="time" name="biksha_time" required>
+  <input type="tel" name="phone_number" placeholder="Phone Number" required>
+  <input type="text" name="location" placeholder="Location" required>
+  <input type="text" name="near_landmark" placeholder="Near Landmark">
+  <input type="text" name="pincode" placeholder="Pincode">
+  <button type="submit" class="submit-btn">Submit</button>
+</form>
 </div>
 </body>
 </html>
