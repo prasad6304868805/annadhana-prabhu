@@ -7,37 +7,42 @@
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
-body {
-  font-family: "Poppins", sans-serif;
+html, body {
   width: 100%;
   height: 100%;
-  background: #fff8e1;
+  font-family: "Poppins", sans-serif;
+  background: #f0e7db;
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-.container {
-  width: 100vw;
-  height: 100vh;
+.card {
+  width: 100%;
+  max-width: 400px;
+  aspect-ratio: 9/16; /* 9:16 card */
   background: #fff3e0;
+  border-radius: 25px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+  padding: 20px;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  padding: 20px;
-  overflow-y: auto; /* scroll if keyboard appears */
+  position: relative;
+  overflow-y: auto;
 }
 
 .back-btn {
-  align-self: flex-start;
-  padding: 8px 14px;
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  padding: 8px 16px;
   border: none;
   border-radius: 12px;
   background: linear-gradient(45deg,#ff7043,#ff9800);
   color: #fff;
-  cursor: pointer;
   font-size: 14px;
-  margin-bottom: 15px;
+  cursor: pointer;
+  z-index: 2;
   transition: all 0.3s ease;
 }
 .back-btn:hover {
@@ -45,65 +50,91 @@ body {
   background: linear-gradient(45deg,#ff8f00,#ffc107);
 }
 
-form {
-  width: 100%;
-  max-width: 400px; /* prevent form stretching on large screens */
-  display: flex;
-  flex-direction: column;
-}
-
 h2 {
   text-align: center;
   color: #ff7043;
-  margin-bottom: 15px;
-  font-size: 24px;
+  font-size: 22px; /* smaller than before */
+  margin-top: 60px; /* space below back button */
+  margin-bottom: 20px;
+  font-weight: 700;
+}
+
+form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  padding: 0 10px;
 }
 
 input {
-  margin: 8px 0;
   padding: 12px;
   border: 1px solid #ccc;
-  border-radius: 10px;
-  font-size: 16px;
+  border-radius: 12px;
+  font-size: 15px;
   width: 100%;
+}
+
+.date-time-row {
+  display: flex;
+  gap: 10px;
+}
+
+.date-time-row label {
+  font-weight: 600;
+  font-size: 15px;
+  flex: 1;
+  align-self: center;
+}
+
+.date-time-row input {
+  flex: 2;
 }
 
 button.submit-btn {
   background: linear-gradient(45deg,#ff7043,#ff9800);
   border: none;
   color: #fff;
-  padding: 14px;
+  padding: 16px;
   border-radius: 12px;
-  margin-top: 20px;
   cursor: pointer;
   font-size: 18px;
-  font-weight: 600;
+  font-weight: 700;
   transition: all 0.3s ease;
 }
-
 button.submit-btn:hover {
   transform: scale(1.05);
   background: linear-gradient(45deg,#ff8f00,#ffc107);
 }
 
-/* Optional: adjust input/button sizes on small screens */
-@media (max-width: 360px) {
-  input, button.submit-btn {
-    font-size: 14px;
-    padding: 10px;
-  }
+/* Scrollbar hidden for card */
+.card::-webkit-scrollbar { width: 0; background: transparent; }
+
+@media (max-width: 400px) {
+  .date-time-row { flex-direction: column; }
+  .date-time-row label, .date-time-row input { flex: 1; width: 100%; }
 }
 </style>
 </head>
 <body>
-<div class="container">
+
+<div class="card">
   <button class="back-btn" onclick="window.location.href='{{ url_for('biksha') }}'">⬅ Back</button>
 
+  <h2>Register Biksha</h2>
   <form action="{{ url_for('add_biksha') }}" method="POST">
-    <h2>Register Biksha</h2>
     <input type="text" name="swamy_name" placeholder="Swamy Name" required>
-    <input type="date" name="biksha_date" required>
-    <input type="time" name="biksha_time" required>
+
+    <div class="date-time-row">
+      <label for="biksha_date">Date:</label>
+      <input type="date" id="biksha_date" name="biksha_date" required>
+    </div>
+
+    <div class="date-time-row">
+      <label for="biksha_time">Time:</label>
+      <input type="time" id="biksha_time" name="biksha_time" required>
+    </div>
+
     <input type="tel" name="phone_number" placeholder="Phone Number" required>
     <input type="text" name="location" placeholder="Location" required>
     <input type="text" name="near_landmark" placeholder="Near Landmark">
@@ -111,5 +142,6 @@ button.submit-btn:hover {
     <button type="submit" class="submit-btn">Submit</button>
   </form>
 </div>
+
 </body>
 </html>

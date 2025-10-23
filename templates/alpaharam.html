@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Biksha</title>
+<title>Alpaharam</title>
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -150,25 +150,26 @@ body {
   </div>
 
   <div class="card-container" id="cardContainer">
-    {% if bikshas %}
-      {% for b in bikshas %}
+    {% if alpaharams %}
+      {% for a in alpaharams %}
         <div class="card">
-          <h3>{{ b.swamy_name }}</h3>
-          <p><span>Date:</span> {{ b.biksha_date }}</p>
-          <p><span>Time:</span> {{ b.biksha_time }}</p>
-          <p><span>Location:</span> {{ b.location }}</p>
-          <p><span>Landmark:</span> {{ b.near_landmark }}</p>
-          <p><span>Pincode:</span> {{ b.pincode }}</p>
+          <h3>{{ a.swamy_name }}</h3>
+          <p><span>Date:</span> {{ a.biksha_date }}</p>
+          <p><span>Time:</span> {{ a.biksha_time }}</p>
+          <p><span>Location:</span> {{ a.location }}</p>
+          <p><span>Landmark:</span> {{ a.near_landmark }}</p>
+          <p><span>Pincode:</span> {{ a.pincode }}</p>
+          <p><span>Phone:</span> {{ a.phone_number }}</p>
         </div>
       {% endfor %}
     {% else %}
-      <div class="no-data">No Biksha entries found.</div>
+      <div class="no-data">No Alpaharam entries found.</div>
     {% endif %}
   </div>
 
   <div class="bottom-btns">
     <button onclick="window.location.href='{{ url_for('home') }}'">Home</button>
-    <button onclick="window.location.href='{{ url_for('add_biksha') }}'">Register</button>
+    <button onclick="window.location.href='{{ url_for('add_alpaharam') }}'">Register</button>
   </div>
 </div>
 
@@ -191,7 +192,7 @@ function search() {
     });
 
     if (filtered.length === 0) {
-        container.innerHTML = '<div class="no-data">No matching Biksha entries found.</div>';
+        container.innerHTML = '<div class="no-data">No matching Alpaharam entries found.</div>';
     } else {
         filtered.forEach(c => container.appendChild(c));
     }

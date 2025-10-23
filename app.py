@@ -10,9 +10,7 @@ app = Flask(__name__)
 # ------------------------
 # Database configuration
 # ------------------------
-# Make sure these environment variables are set in Render:
-# DB_HOST, DB_USER, DB_PASS, DB_NAME
-app.config['SQLALCHEMY_DATABASE_URI'] = f"postgresql://root:kVeQLihcFCQ01s876TZRS2uHQUGrSxGr@dpg-d3sijungi27c73dlpvfg-a.oregon-postgres.render.com/devotional"
+app.config['SQLALCHEMY_DATABASE_URI'] = "postgresql://root:kVeQLihcFCQ01s876TZRS2uHQUGrSxGr@dpg-d3sijungi27c73dlpvfg-a.oregon-postgres.render.com/devotional"
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
@@ -37,7 +35,18 @@ class Biksha(db.Model):
     swamy_name = db.Column(db.String(100), nullable=False)
     biksha_date = db.Column(db.String(20), nullable=False)
     biksha_time = db.Column(db.String(20), nullable=False)
-    phone_number = db.Column(db.String(20), nullable=False)
+    phone_number = db.Column(db.String(20), nullable=False)  # added
+    location = db.Column(db.String(200), nullable=False)
+    near_landmark = db.Column(db.String(100), nullable=True)
+    pincode = db.Column(db.String(10), nullable=True)
+
+class Alpaharam(db.Model):
+    __tablename__ = 'alpaharam'
+    id = db.Column(db.Integer, primary_key=True)
+    swamy_name = db.Column(db.String(100), nullable=False)
+    biksha_date = db.Column(db.String(20), nullable=False)
+    biksha_time = db.Column(db.String(20), nullable=False)
+    phone_number = db.Column(db.String(20), nullable=False)  # added
     location = db.Column(db.String(200), nullable=False)
     near_landmark = db.Column(db.String(100), nullable=True)
     pincode = db.Column(db.String(10), nullable=True)
@@ -85,7 +94,7 @@ def add_biksha():
             swamy_name=request.form['swamy_name'],
             biksha_date=request.form['biksha_date'],
             biksha_time=request.form['biksha_time'],
-            phone_number=request.form['phone_number'],
+            phone_number=request.form['phone_number'],  # added
             location=request.form['location'],
             near_landmark=request.form.get('near_landmark'),
             pincode=request.form.get('pincode')
@@ -95,13 +104,34 @@ def add_biksha():
         return redirect('/biksha')
     return render_template('add_biksha.html')
 
+# --------- Alpaharam Routes ---------
+@app.route('/alpaharam')
+def alpaharam():
+    alpaharams = Alpaharam.query.all()
+    return render_template('alpaharam.html', alpaharams=alpaharams)
+
+@app.route('/add_alpaharam', methods=['GET', 'POST'])
+def add_alpaharam():
+    if request.method == 'POST':
+        new_alpaharam = Alpaharam(
+            swamy_name=request.form['swamy_name'],
+            biksha_date=request.form['biksha_date'],
+            biksha_time=request.form['biksha_time'],
+            phone_number=request.form['phone_number'],  # added
+            location=request.form['location'],
+            near_landmark=request.form.get('near_landmark'),
+            pincode=request.form.get('pincode')
+        )
+        db.session.add(new_alpaharam)
+        db.session.commit()
+        return redirect('/alpaharam')
+    return render_template('add_alpaharam.html')
 
 # ------------------------
 # Run app
 # ------------------------
 if __name__ == '__main__':
-    # Create tables if they don't exist
     with app.app_context():
-        db.create_all()
+        db.create_all()  # creates tables if not exist
 
-    app.run(debug=False, host='0.0.0.0', port=int(os.environ.get('PORT', 5001)))
+    app.run(debug=True, host='0.0.0.0', port=int(os.environ.get('PORT', 5001)))

@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Register Pooja</title>
+<title>Add Alpaharam</title>
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -53,7 +53,7 @@ html, body {
 h2 {
   text-align: center;
   color: #ff7043;
-  font-size: 22px;
+  font-size: 22px; /* reduced size */
   margin-top: 60px; /* space below back button */
   margin-bottom: 20px;
   font-weight: 700;
@@ -63,7 +63,7 @@ form {
   width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 15px;
   padding: 0 10px;
 }
 
@@ -77,19 +77,18 @@ input {
 
 .date-time-row {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  gap: 10px;
 }
 
 .date-time-row label {
-  width: 30%;
   font-weight: 600;
-  color: #ff7043;
+  font-size: 15px;
+  flex: 1;
+  align-self: center;
 }
 
 .date-time-row input {
-  width: 65%;
-  padding: 8px;
+  flex: 2;
 }
 
 button.submit-btn {
@@ -113,45 +112,36 @@ button.submit-btn:hover {
 
 @media (max-width: 400px) {
   .date-time-row { flex-direction: column; }
-  .date-time-row label, .date-time-row input { flex: 1; width: 100%; margin-bottom: 8px; }
+  .date-time-row label, .date-time-row input { flex: 1; width: 100%; }
 }
 </style>
 </head>
 <body>
 
 <div class="card">
-  <button class="back-btn" onclick="window.location.href='{{ url_for('pooja') }}'">⬅ Back</button>
+  <button class="back-btn" onclick="window.location.href='{{ url_for('alpaharam') }}'">⬅ Back</button>
 
-  <h2>Register Pooja</h2>
-  <form action="{{ url_for('add_pooja') }}" method="POST">
-    <input type="text" name="head_name" placeholder="Head Name" required>
+  <h2>Add Alpaharam</h2>
+  <form action="{{ url_for('add_alpaharam') }}" method="POST">
+    <input type="text" name="swamy_name" placeholder="Swamy Name" required>
 
     <div class="date-time-row">
-      <label for="pooja_date">Date</label>
-      <input type="date" name="pooja_date" id="pooja_date" required>
+      <label for="biksha_date">Date:</label>
+      <input type="date" id="biksha_date" name="biksha_date" required>
     </div>
 
     <div class="date-time-row">
-      <label for="pooja_time">Time</label>
-      <input type="time" name="pooja_time" id="pooja_time" required>
+      <label for="biksha_time">Time:</label>
+      <input type="time" id="biksha_time" name="biksha_time" required>
     </div>
 
     <input type="tel" name="phone_number" placeholder="Phone Number" required>
     <input type="text" name="location" placeholder="Location" required>
     <input type="text" name="near_landmark" placeholder="Near Landmark">
     <input type="text" name="pincode" placeholder="Pincode">
-    <button type="submit" class="submit-btn">Submit</button>
+    <button type="submit" class="submit-btn">Add Alpaharam</button>
   </form>
 </div>
-
-<script>
-// Set current date and time
-const dateInput = document.getElementById('pooja_date');
-const timeInput = document.getElementById('pooja_time');
-const today = new Date();
-dateInput.valueAsDate = today;
-timeInput.value = today.toTimeString().slice(0,5);
-</script>
 
 </body>
 </html>
