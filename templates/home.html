@@ -17,9 +17,10 @@ html, body {
   font-family: "Poppins", sans-serif;
 }
 
-/* App container: 9:16 aspect ratio */
+/* Responsive app container: 9:16 aspect ratio */
 .app-container {
-  width: 360px;
+  width: 100%;
+  max-width: 400px; /* optional max width for larger screens */
   aspect-ratio: 9/16;
   position: relative;
   border-radius: 30px;
@@ -32,19 +33,20 @@ html, body {
   flex-direction: column;
   justify-content: flex-end;
   align-items: center;
-  padding-bottom: 60px; /* space from bottom */
+  padding-bottom: 60px; /* space from bottom for buttons */
 }
 
-/* Modern buttons */
+/* Buttons */
 .button {
-  width: 260px;           /* increased width */
-  padding: 12px 0;        /* decreased height */
+  width: 80%;             /* fill most of the container width */
+  max-width: 300px;       /* optional maximum width */
+  padding: 14px 0;
   margin: 12px 0;
   border: none;
   border-radius: 40px;
-  background: rgba(255,255,255,0.5); /* transparent frosted effect */
+  background: rgba(255,255,255,0.5); /* frosted effect */
   color: #ff5722;
-  font-size: 20px;
+  font-size: 18px;
   font-weight: 600;
   cursor: pointer;
   box-shadow: 0 6px 18px rgba(0,0,0,0.2);
@@ -58,14 +60,26 @@ html, body {
   transform: scale(1.05);
   box-shadow: 0 8px 22px rgba(0,0,0,0.3);
 }
+
+/* Optional: make container scale nicely on very small devices */
+@media (max-width: 360px) {
+  .app-container {
+    border-radius: 20px;
+    padding-bottom: 40px;
+  }
+  .button {
+    width: 90%;
+    font-size: 16px;
+  }
+}
 </style>
 </head>
 <body>
 
 <div class="app-container">
-
-<button class="button" onclick="location.href='{{ url_for('pooja') }}'">Pooja</button>
-<button class="button" onclick="location.href='{{ url_for('biksha') }}'">Biksha</button></div>
+  <button class="button" onclick="location.href='{{ url_for('pooja') }}'">Pooja</button>
+  <button class="button" onclick="location.href='{{ url_for('biksha') }}'">Biksha</button>
+</div>
 
 </body>
 </html>

@@ -7,24 +7,18 @@
 <style>
 body { 
   font-family: "Poppins", sans-serif; 
-  display: flex; 
-  justify-content: center; 
-  align-items: center;
-  background: #fff8e1; 
   margin: 0;
-  height: 100vh;
+  background: #fff8e1; 
 }
 
 .container { 
-  width: 360px; 
-  aspect-ratio: 9/16; 
+  width: 100vw; 
+  height: 100vh; 
   background: #fff3e0; 
-  border-radius: 25px; 
-  padding: 15px; 
-  box-shadow: 0 0 25px rgba(0,0,0,0.3); 
   display: flex; 
   flex-direction: column; 
-  align-items: center; 
+  padding: 15px; 
+  box-sizing: border-box;
   position: relative;
   overflow: hidden;
 }
@@ -33,25 +27,24 @@ body {
   position: absolute; 
   top: 10px; 
   left: 10px; 
-  padding: 6px 12px; 
+  padding: 8px 14px; 
   border: none; 
-  border-radius: 10px; 
+  border-radius: 12px; 
   background: linear-gradient(45deg,#ff7043,#ff9800); 
   color: #fff; 
   cursor: pointer; 
-  transition: all 0.3s ease;
   font-size: 14px;
+  transition: all 0.3s ease;
 }
 .back-btn:hover { 
   transform: scale(1.05); 
   background: linear-gradient(45deg,#ff8f00,#ffc107);
 }
 
-/* Search input at top-right */
 .search-box {
   position: absolute;
-  top: 12px;
-  right: 12px;
+  top: 10px;
+  right: 10px;
 }
 .search-box input {
   padding: 6px 10px;
@@ -59,44 +52,26 @@ body {
   border: 1px solid #ccc;
   font-size: 13px;
 }
-.search-box button {
-  padding: 6px 10px;
-  border-radius: 12px;
-  border: none;
-  background: linear-gradient(45deg,#ff7043,#ff9800);
-  color: #fff;
-  font-size: 13px;
-  cursor: pointer;
-}
-.search-box button:hover {
-  background: linear-gradient(45deg,#ff8f00,#ffc107);
-}
 
 .card-container {
   flex: 1;
   width: 100%;
-  position: relative;
-  margin-top: 45px;
-  overflow: hidden;
+  margin-top: 50px;
+  overflow-y: auto;
+  padding-right: 5px;
 }
 
-.page {
-  position: absolute;
-  width: 100%;
-  top: 0;
-  left: 0;
-  transition: transform 0.4s ease, opacity 0.3s ease;
-}
+/* Hide scrollbar but allow scroll */
+.card-container::-webkit-scrollbar { width: 0; background: transparent; }
 
 .card { 
-  width: 90%; 
+  width: 95%; 
   background: linear-gradient(135deg,#fff8dc,#ffe0b2); 
   border-radius: 20px; 
   padding: 12px 10px; 
   box-shadow: 0 6px 15px rgba(0,0,0,0.2);
   margin: 8px auto;
   text-align: left;
-  overflow: hidden;
 }
 .card h3 {
   color: #ff7043; 
@@ -134,7 +109,7 @@ body {
 .bottom-btns button{ 
   flex: 1; 
   margin: 0 4px; 
-  padding: 10px 0; 
+  padding: 12px 0; 
   border: none; 
   border-radius: 12px; 
   background: linear-gradient(45deg,#ff7043,#ff9800); 
@@ -184,68 +159,25 @@ body {
 <script>
 const container = document.getElementById('cardContainer');
 const allCardsOriginal = Array.from(document.querySelectorAll('.card'));
-let filteredCards = [...allCardsOriginal];
-let currentPage = 0;
 
-// Function to display pages with 3 cards per page
-function displayPages(cards) {
-  container.innerHTML = '';
-  const perPage = 3;
-  const pages = [];
-  for (let i = 0; i < cards.length; i += perPage) {
-    const page = document.createElement('div');
-    page.className = 'page';
-    cards.slice(i, i + perPage).forEach(c => page.appendChild(c));
-    container.appendChild(page);
-    pages.push(page);
-  }
-  currentPage = 0;
-  showPage(currentPage);
-  return pages;
-}
-
-// Show page function
-function showPage(index) {
-  const pages = Array.from(container.querySelectorAll('.page'));
-  pages.forEach((p, i) => {
-    p.style.transform = `translateY(${(i - index) * 100}%)`;
-    p.style.opacity = i === index ? 1 : 0;
-  });
-}
-
-// Swipe detection
-let startY = 0;
-container.addEventListener('touchstart', e => startY = e.touches[0].clientY);
-container.addEventListener('touchend', e => {
-  const endY = e.changedTouches[0].clientY;
-  const pages = Array.from(container.querySelectorAll('.page'));
-  if (startY - endY > 50 && currentPage < pages.length - 1) {
-    currentPage++;
-    showPage(currentPage);
-  } else if (endY - startY > 50 && currentPage > 0) {
-    currentPage--;
-    showPage(currentPage);
-  }
-});
-
-// Initial display
-displayPages(filteredCards);
-
-// Search function - filters all card fields
 function search() {
   const query = document.getElementById('searchInput').value.toLowerCase().trim();
-  if (query === '') {
-    filteredCards = [...allCardsOriginal];
-  } else {
-    filteredCards = allCardsOriginal.filter(card => {
-      const texts = Array.from(card.querySelectorAll('h3, p')).map(el => el.innerText.toLowerCase());
-      return texts.some(text => text.includes(query));
-    });
+  container.innerHTML = '';
+
+  if (!query) {
+    allCardsOriginal.forEach(c => container.appendChild(c));
+    return;
   }
-  if (filteredCards.length === 0) {
+
+  const filtered = allCardsOriginal.filter(card => {
+    const texts = Array.from(card.querySelectorAll('h3, p')).map(el => el.innerText.toLowerCase());
+    return texts.some(text => text.includes(query));
+  });
+
+  if (filtered.length === 0) {
     container.innerHTML = '<div class="no-data">No matching Pooja entries found.</div>';
   } else {
-    displayPages(filteredCards);
+    filtered.forEach(c => container.appendChild(c));
   }
 }
 </script>
