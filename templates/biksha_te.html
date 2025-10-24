@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="te">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Biksha</title>
+<title>భిక్షా</title>
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -75,32 +75,30 @@ body {
 .card-container::-webkit-scrollbar { width: 0; background: transparent; }
 
 .card {
-    width: 95%;
+    width: 90%;
     background: linear-gradient(135deg,#fff8dc,#ffe0b2);
     border-radius: 20px;
     padding: 15px 10px;
     box-shadow: 0 6px 15px rgba(0,0,0,0.2);
-    margin: 8px auto;
+    margin: 10px auto;
     text-align: center; /* center all content */
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    gap: 5px; /* spacing between elements */
+    gap: 6px; /* spacing between items */
 }
 .card h3 {
     color: #ff7043;
-    font-size: 16px;
+    font-size: 18px;
     font-weight: 700;
-    text-align: center;
+    margin-bottom: 6px;
 }
 .card p {
-    font-size: 13px;
+    font-size: 14px;
     color: #5d4037;
     font-weight: 500;
     line-height: 1.4;
-    margin: 2px 0;
-    text-align: center;
 }
 .card p span {
     font-weight: 700;
@@ -140,7 +138,7 @@ body {
 
 @media screen and (max-width: 360px) {
     .search-box input { width: 100px; font-size: 12px; padding: 4px 8px; }
-    .card p, .card h3 { font-size: 12px; }
+    .card p, .card h3 { font-size: 13px; }
     .bottom-btns button { font-size: 12px; padding: 8px 0; }
 }
 </style>
@@ -148,10 +146,10 @@ body {
 <body>
 
 <div class="app-card">
-  <button class="back-btn" onclick="window.location.href='{{ url_for('home') }}'">⬅ Back</button>
+  <button class="back-btn" onclick="window.location.href='{{ url_for('home_te') }}'">⬅ వెనుకకు</button>
 
   <div class="search-box">
-    <input type="text" id="searchInput" placeholder="Search..." oninput="search()">
+    <input type="text" id="searchInput" placeholder="శోధించండి..." oninput="search()">
   </div>
 
   <div class="card-container" id="cardContainer">
@@ -159,21 +157,21 @@ body {
       {% for b in bikshas %}
         <div class="card">
           <h3>{{ b.swamy_name }}</h3>
-          <p><span>Date:</span> {{ b.biksha_date }}</p>
-          <p><span>Time:</span> {{ b.biksha_time }}</p>
-          <p><span>Location:</span> {{ b.location }}</p>
-          <p><span>Landmark:</span> {{ b.near_landmark }}</p>
-          <p><span>Pincode:</span> {{ b.pincode }}</p>
+          <p><span>తేదీ:</span> {{ b.biksha_date }}</p>
+          <p><span>సమయం:</span> {{ b.biksha_time }}</p>
+          <p><span>స్థలం:</span> {{ b.location }}</p>
+          <p><span>ల్యాండ్‌మార్క్:</span> {{ b.near_landmark }}</p>
+          <p><span>పిన్ కోడ్:</span> {{ b.pincode }}</p>
         </div>
       {% endfor %}
     {% else %}
-      <div class="no-data">No Biksha entries found</div>
+      <div class="no-data">ఏ భిక్షా నమోదు లేదు.</div>
     {% endif %}
   </div>
 
   <div class="bottom-btns">
-    <button onclick="window.location.href='{{ url_for('home') }}'">Home</button>
-    <button onclick="window.location.href='{{ url_for('add_biksha') }}'">Register</button>
+    <button onclick="window.location.href='{{ url_for('home_te') }}'">హోం</button>
+    <button onclick="window.location.href='{{ url_for('add_biksha_te') }}'">నమోదు చేయండి</button>
   </div>
 </div>
 
@@ -196,7 +194,7 @@ function search() {
     });
 
     if (filtered.length === 0) {
-        container.innerHTML = '<div class="no-data">No matching Biksha entries found.</div>';
+        container.innerHTML = '<div class="no-data">కోసం సరిపడే భిక్షా నమోదు లేదు.</div>';
     } else {
         filtered.forEach(c => container.appendChild(c));
     }

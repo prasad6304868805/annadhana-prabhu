@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="te">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Devotional App</title>
+<title>అన్నధాన ప్రభువు</title>
 <style>
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -17,7 +17,6 @@ html, body {
   background: #f0e7db;
 }
 
-/* 9:16 container */
 .app-container {
   width: 100%;
   max-width: 400px;
@@ -29,40 +28,34 @@ html, body {
   background-size: cover;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: flex-start;
   align-items: center;
   box-shadow: 0 20px 40px rgba(0,0,0,0.3);
-  padding: 30px 0 50px 0; /* slightly less top padding to move title up */
+  padding: 30px 0 60px 0; /* increased top padding to move title down */
 }
 
-/* Title block */
-.title-block {
-  text-align: center;
-  margin-top: 0px; /* move title up */
-}
-
-.title, .subtitle {
+.title {
   color: #fff;
   font-size: 32px; /* title size */
   font-weight: 700;
   text-shadow: 2px 2px 8px rgba(0,0,0,0.5);
-  line-height: 1.2;
+  margin-top: 10px; /* slight extra spacing */
+  text-align: center;
 }
 
-/* Buttons section */
 .buttons {
   display: flex;
   flex-direction: column;
   align-items: center;
   width: 100%;
+  margin-top: auto; /* push buttons to bottom */
 }
 
-/* Individual buttons */
 .button {
   width: 80%;
   max-width: 300px;
   padding: 14px 0;
-  margin: 10px 0;
+  margin: 12px 0;
   border: none;
   border-radius: 40px;
   background: rgba(255,255,255,0.5);
@@ -82,25 +75,22 @@ html, body {
   box-shadow: 0 8px 22px rgba(0,0,0,0.3);
 }
 
-/* Small screen adjustments */
 @media (max-width: 360px) {
   .app-container { max-width: 100%; padding-bottom: 40px; }
   .button { width: 90%; font-size: 16px; }
-  .title, .subtitle { font-size: 26px; }
+  .title { font-size: 26px; }
 }
 </style>
 </head>
 <body>
 
 <div class="app-container">
-  <div class="title-block">
-    <div class="title">Annadhana Prabhuva</div>
-  </div>
+  <div class="title">అన్నధాన ప్రభువు</div>
 
   <div class="buttons">
-    <button class="button" onclick="location.href='{{ url_for('pooja') }}'">Pooja</button>
-    <button class="button" onclick="location.href='{{ url_for('biksha') }}'">Biksha</button>
-    <button class="button" onclick="location.href='{{ url_for('alpaharam') }}'">Alpaharam</button>
+    <button class="button" onclick="location.href='{{ url_for('pooja_te') }}'">పూజ</button>
+    <button class="button" onclick="location.href='{{ url_for('biksha_te') }}'">భిక్ష</button>
+    <button class="button" onclick="location.href='{{ url_for('alpaharam_te') }}'">అల్పాహారం</button>
   </div>
 </div>
 
