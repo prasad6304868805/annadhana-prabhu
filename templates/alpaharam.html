@@ -8,145 +8,149 @@
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
 body {
-    font-family: "Poppins", sans-serif;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background: #f0e7db;
-    height: 100vh;
-    width: 100%;
+  font-family: "Poppins", sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #f0e7db;
+  height: 100vh;
+  width: 100%;
 }
 
 .app-card {
-    width: 100%;
-    max-width: 400px;
-    height: 711px; /* 9:16 ratio */
-    background: #fff3e0;
-    display: flex;
-    flex-direction: column;
-    padding: 15px;
-    position: relative;
-    overflow: hidden;
-    border-radius: 25px;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+  width: 100%;
+  max-width: 400px;
+  height: 711px; /* 9:16 ratio */
+  background: #fff3e0;
+  display: flex;
+  flex-direction: column;
+  padding: 15px;
+  position: relative;
+  overflow: hidden;
+  border-radius: 25px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
 }
 
 /* Back Button */
 .back-btn {
-    position: absolute;
-    top: 10px;
-    left: 10px;
-    padding: 8px 14px;
-    border: none;
-    border-radius: 12px;
-    background: linear-gradient(45deg,#ff7043,#ff9800);
-    color: #fff;
-    cursor: pointer;
-    font-size: 14px;
-    transition: all 0.3s ease;
-    z-index: 2;
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  padding: 8px 14px;
+  border: none;
+  border-radius: 12px;
+  background: linear-gradient(45deg,#ff7043,#ff9800);
+  color: #fff;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.3s ease;
+  z-index: 2;
 }
-.back-btn:hover { 
-    transform: scale(1.05);
-    background: linear-gradient(45deg,#ff8f00,#ffc107);
+.back-btn:hover {
+  transform: scale(1.05);
+  background: linear-gradient(45deg,#ff8f00,#ffc107);
 }
 
 /* Search Box */
 .search-box {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    z-index: 2;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 2;
 }
 .search-box input {
-    padding: 6px 10px;
-    border-radius: 12px;
-    border: 1px solid #ccc;
-    font-size: 13px;
-    width: 120px;
+  padding: 6px 10px;
+  border-radius: 12px;
+  border: 1px solid #ccc;
+  font-size: 13px;
+  width: 120px;
 }
 
 /* Card container */
 .card-container {
-    flex: 1;
-    margin-top: 50px;
-    width: 100%;
-    overflow-y: auto;
-    padding-right: 5px;
-    scroll-behavior: smooth;
+  flex: 1;
+  margin-top: 50px;
+  width: 100%;
+  overflow-y: auto;
+  padding-right: 5px;
+  scroll-behavior: smooth;
 }
 .card-container::-webkit-scrollbar { width: 0; background: transparent; }
 
 /* Individual card */
 .card {
-    width: 95%;
-    background: linear-gradient(135deg,#fff8dc,#ffe0b2);
-    border-radius: 20px;
-    padding: 15px 10px;
-    box-shadow: 0 6px 15px rgba(0,0,0,0.2);
-    margin: 8px auto;
-    text-align: center; /* center content */
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    gap: 5px;
+  width: 95%;
+  background: linear-gradient(135deg,#fff8dc,#ffe0b2);
+  border-radius: 20px;
+  padding: 15px 10px;
+  box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+  margin: 8px auto;
+  text-align: left;
 }
+
 .card h3 {
-    color: #ff7043;
-    font-size: 16px;
-    font-weight: 700;
+  color: #ff7043;
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 10px;
+  text-align: center;
 }
-.card p {
-    font-size: 13px;
-    color: #5d4037;
-    font-weight: 500;
-    line-height: 1.4;
-    margin: 2px 0;
+
+/* Table inside card */
+.card table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
 }
-.card p span {
-    font-weight: 700;
-    color: #ff7043;
-    margin-right: 4px;
+.card td {
+  padding: 4px 6px;
+  border-bottom: 1px solid rgba(0,0,0,0.05);
+  color: #5d4037;
+  text-align: left;
+}
+.card td:first-child {
+  font-weight: 700;
+  color: #ff7043;
+  width: 40%;
 }
 
 /* No Data */
-.no-data { 
-    margin-top: 30px; 
-    color: #a52a2a; 
-    font-size: 14px; 
-    text-align: center;
+.no-data {
+  margin-top: 30px;
+  color: #a52a2a;
+  font-size: 14px;
+  text-align: center;
 }
 
 /* Bottom Buttons */
 .bottom-btns {
-    width: 100%;
-    display: flex;
-    justify-content: space-around;
-    margin-top: 8px;
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  margin-top: 8px;
 }
 .bottom-btns button{
-    flex: 1;
-    margin: 0 4px;
-    padding: 10px 0;
-    border: none;
-    border-radius: 12px;
-    background: linear-gradient(45deg,#ff7043,#ff9800);
-    color: #fff;
-    font-size: 14px;
-    cursor: pointer;
-    transition: all 0.3s ease;
+  flex: 1;
+  margin: 0 4px;
+  padding: 10px 0;
+  border: none;
+  border-radius: 12px;
+  background: linear-gradient(45deg,#ff7043,#ff9800);
+  color: #fff;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.3s ease;
 }
 .bottom-btns button:hover {
-    transform: scale(1.05);
-    background: linear-gradient(45deg,#ff8f00,#ffc107);
+  transform: scale(1.05);
+  background: linear-gradient(45deg,#ff8f00,#ffc107);
 }
 
 /* Mobile */
 @media screen and (max-width: 360px) {
-    .search-box input { width: 100px; font-size: 12px; padding: 4px 8px; }
-    .card p, .card h3 { font-size: 12px; }
-    .bottom-btns button { font-size: 12px; padding: 8px 0; }
+  .search-box input { width: 100px; font-size: 12px; padding: 4px 8px; }
+  .card td { font-size: 12px; }
+  .bottom-btns button { font-size: 12px; padding: 8px 0; }
 }
 </style>
 </head>
@@ -164,12 +168,14 @@ body {
       {% for a in alpaharams %}
         <div class="card">
           <h3>{{ a.swamy_name }}</h3>
-          <p><span>Date:</span> {{ a.biksha_date }}</p>
-          <p><span>Time:</span> {{ a.biksha_time }}</p>
-          <p><span>Location:</span> {{ a.location }}</p>
-          <p><span>Landmark:</span> {{ a.near_landmark }}</p>
-          <p><span>Pincode:</span> {{ a.pincode }}</p>
-          <!-- Phone number removed -->
+          <table>
+            <tr><td>From Date</td><td>{{ a.from_date }}</td></tr>
+            <tr><td>To Date</td><td>{{ a.to_date }}</td></tr>
+            <tr><td>Time</td><td>{{ a.biksha_time }}</td></tr>
+            <tr><td>Location</td><td>{{ a.location }}</td></tr>
+            <tr><td>Landmark</td><td>{{ a.near_landmark }}</td></tr>
+            <tr><td>Pincode</td><td>{{ a.pincode }}</td></tr>
+          </table>
         </div>
       {% endfor %}
     {% else %}
@@ -197,7 +203,7 @@ function search() {
     }
 
     const filtered = allCardsOriginal.filter(card => {
-        const texts = Array.from(card.querySelectorAll('h3, p')).map(el => el.innerText.toLowerCase());
+        const texts = Array.from(card.querySelectorAll('h3, td')).map(el => el.innerText.toLowerCase());
         return texts.some(text => text.includes(query));
     });
 

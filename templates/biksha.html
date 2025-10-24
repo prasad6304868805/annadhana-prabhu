@@ -3,145 +3,146 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Biksha</title>
+<title>Biksha List</title>
 <style>
+/* --- Same CSS as before --- */
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
 body {
-    font-family: "Poppins", sans-serif;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background: #f0e7db;
-    height: 100vh;
-    width: 100%;
+  font-family: "Poppins", sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #f0e7db;
+  height: 100vh;
+  width: 100%;
 }
 
 .app-card {
-    width: 100%;
-    max-width: 400px;
-    height: 711px; /* 9:16 ratio */
-    background: #fff3e0;
-    display: flex;
-    flex-direction: column;
-    padding: 15px;
-    position: relative;
-    overflow: hidden;
-    border-radius: 25px;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+  width: 100%;
+  max-width: 400px;
+  height: 711px;
+  background: #fff3e0;
+  display: flex;
+  flex-direction: column;
+  padding: 15px;
+  position: relative;
+  overflow: hidden;
+  border-radius: 25px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
 }
 
 .back-btn {
-    position: absolute;
-    top: 10px;
-    left: 10px;
-    padding: 8px 14px;
-    border: none;
-    border-radius: 12px;
-    background: linear-gradient(45deg,#ff7043,#ff9800);
-    color: #fff;
-    cursor: pointer;
-    font-size: 14px;
-    transition: all 0.3s ease;
-    z-index: 2;
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  padding: 8px 14px;
+  border: none;
+  border-radius: 12px;
+  background: linear-gradient(45deg,#ff7043,#ff9800);
+  color: #fff;
+  cursor: pointer;
+  font-size: 14px;
+  z-index: 2;
 }
-.back-btn:hover { 
-    transform: scale(1.05);
-    background: linear-gradient(45deg,#ff8f00,#ffc107);
+.back-btn:hover {
+  transform: scale(1.05);
+  background: linear-gradient(45deg,#ff8f00,#ffc107);
 }
 
 .search-box {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    z-index: 2;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 2;
 }
 .search-box input {
-    padding: 6px 10px;
-    border-radius: 12px;
-    border: 1px solid #ccc;
-    font-size: 13px;
-    width: 120px;
+  padding: 6px 10px;
+  border-radius: 12px;
+  border: 1px solid #ccc;
+  font-size: 13px;
+  width: 120px;
 }
 
 .card-container {
-    flex: 1;
-    margin-top: 50px;
-    width: 100%;
-    overflow-y: auto;
-    padding-right: 5px;
-    scroll-behavior: smooth;
+  flex: 1;
+  margin-top: 50px;
+  width: 100%;
+  overflow-y: auto;
+  padding-right: 5px;
+  scroll-behavior: smooth;
 }
 .card-container::-webkit-scrollbar { width: 0; background: transparent; }
 
 .card {
-    width: 95%;
-    background: linear-gradient(135deg,#fff8dc,#ffe0b2);
-    border-radius: 20px;
-    padding: 15px 10px;
-    box-shadow: 0 6px 15px rgba(0,0,0,0.2);
-    margin: 8px auto;
-    text-align: center; /* center all content */
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    gap: 5px; /* spacing between elements */
-}
-.card h3 {
-    color: #ff7043;
-    font-size: 16px;
-    font-weight: 700;
-    text-align: center;
-}
-.card p {
-    font-size: 13px;
-    color: #5d4037;
-    font-weight: 500;
-    line-height: 1.4;
-    margin: 2px 0;
-    text-align: center;
-}
-.card p span {
-    font-weight: 700;
-    color: #ff7043;
-    margin-right: 4px;
+  width: 95%;
+  background: linear-gradient(135deg,#fff8dc,#ffe0b2);
+  border-radius: 20px;
+  padding: 15px 10px;
+  box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+  margin: 8px auto;
+  text-align: left;
 }
 
-.no-data { 
-    margin-top: 30px; 
-    color: #a52a2a; 
-    font-size: 14px; 
-    text-align: center;
+.card h3 {
+  color: #ff7043;
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.card table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+.card td {
+  padding: 4px 6px;
+  border-bottom: 1px solid rgba(0,0,0,0.05);
+  color: #5d4037;
+  text-align: left;
+}
+.card td:first-child {
+  font-weight: 700;
+  color: #ff7043;
+  width: 40%;
+}
+
+.no-data {
+  margin-top: 30px;
+  color: #a52a2a;
+  font-size: 14px;
+  text-align: center;
 }
 
 .bottom-btns {
-    width: 100%;
-    display: flex;
-    justify-content: space-around;
-    margin-top: 8px;
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  margin-top: 8px;
 }
-.bottom-btns button{
-    flex: 1;
-    margin: 0 4px;
-    padding: 10px 0;
-    border: none;
-    border-radius: 12px;
-    background: linear-gradient(45deg,#ff7043,#ff9800);
-    color: #fff;
-    font-size: 14px;
-    cursor: pointer;
-    transition: all 0.3s ease;
+.bottom-btns button {
+  flex: 1;
+  margin: 0 4px;
+  padding: 10px 0;
+  border: none;
+  border-radius: 12px;
+  background: linear-gradient(45deg,#ff7043,#ff9800);
+  color: #fff;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.3s ease;
 }
 .bottom-btns button:hover {
-    transform: scale(1.05);
-    background: linear-gradient(45deg,#ff8f00,#ffc107);
+  transform: scale(1.05);
+  background: linear-gradient(45deg,#ff8f00,#ffc107);
 }
 
 @media screen and (max-width: 360px) {
-    .search-box input { width: 100px; font-size: 12px; padding: 4px 8px; }
-    .card p, .card h3 { font-size: 12px; }
-    .bottom-btns button { font-size: 12px; padding: 8px 0; }
+  .search-box input { width: 100px; font-size: 12px; padding: 4px 8px; }
+  .card td, .card h3 { font-size: 12px; }
+  .bottom-btns button { font-size: 12px; padding: 8px 0; }
 }
 </style>
 </head>
@@ -159,11 +160,14 @@ body {
       {% for b in bikshas %}
         <div class="card">
           <h3>{{ b.swamy_name }}</h3>
-          <p><span>Date:</span> {{ b.biksha_date }}</p>
-          <p><span>Time:</span> {{ b.biksha_time }}</p>
-          <p><span>Location:</span> {{ b.location }}</p>
-          <p><span>Landmark:</span> {{ b.near_landmark }}</p>
-          <p><span>Pincode:</span> {{ b.pincode }}</p>
+          <table>
+            <tr><td>From Date</td><td>{{ b.from_date_str }}</td></tr>
+            <tr><td>To Date</td><td>{{ b.to_date_str }}</td></tr>
+            <tr><td>Time</td><td>{{ b.biksha_time }}</td></tr>
+            <tr><td>Location</td><td>{{ b.location }}</td></tr>
+            <tr><td>Landmark</td><td>{{ b.near_landmark }}</td></tr>
+            <tr><td>Pincode</td><td>{{ b.pincode }}</td></tr>
+          </table>
         </div>
       {% endfor %}
     {% else %}
@@ -182,24 +186,24 @@ const container = document.getElementById('cardContainer');
 const allCardsOriginal = Array.from(document.querySelectorAll('.card'));
 
 function search() {
-    const query = document.getElementById('searchInput').value.toLowerCase().trim();
-    container.innerHTML = '';
+  const query = document.getElementById('searchInput').value.toLowerCase().trim();
+  container.innerHTML = '';
 
-    if (!query) {
-        allCardsOriginal.forEach(c => container.appendChild(c));
-        return;
-    }
+  if (!query) {
+    allCardsOriginal.forEach(c => container.appendChild(c));
+    return;
+  }
 
-    const filtered = allCardsOriginal.filter(card => {
-        const texts = Array.from(card.querySelectorAll('h3, p')).map(el => el.innerText.toLowerCase());
-        return texts.some(text => text.includes(query));
-    });
+  const filtered = allCardsOriginal.filter(card => {
+    const texts = Array.from(card.querySelectorAll('h3, td')).map(el => el.innerText.toLowerCase());
+    return texts.some(text => text.includes(query));
+  });
 
-    if (filtered.length === 0) {
-        container.innerHTML = '<div class="no-data">No matching Biksha entries found.</div>';
-    } else {
-        filtered.forEach(c => container.appendChild(c));
-    }
+  if (filtered.length === 0) {
+    container.innerHTML = '<div class="no-data">No matching Biksha entries found.</div>';
+  } else {
+    filtered.forEach(c => container.appendChild(c));
+  }
 }
 </script>
 </body>

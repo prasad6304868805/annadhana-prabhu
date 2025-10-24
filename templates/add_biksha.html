@@ -53,8 +53,8 @@ html, body {
 h2 {
   text-align: center;
   color: #ff7043;
-  font-size: 22px; /* smaller than before */
-  margin-top: 60px; /* space below back button */
+  font-size: 22px;
+  margin-top: 60px;
   margin-bottom: 20px;
   font-weight: 700;
 }
@@ -88,8 +88,7 @@ input {
 }
 
 .date-time-row input {
-    width: 70%;
-  padding: 8px;
+  flex: 2;
 }
 
 button.submit-btn {
@@ -108,7 +107,6 @@ button.submit-btn:hover {
   background: linear-gradient(45deg,#ff8f00,#ffc107);
 }
 
-/* Scrollbar hidden for card */
 .card::-webkit-scrollbar { width: 0; background: transparent; }
 
 @media (max-width: 400px) {
@@ -124,15 +122,20 @@ button.submit-btn:hover {
 
   <h2>Register Biksha</h2>
   <form action="{{ url_for('add_biksha') }}" method="POST">
-    <input type="text" name="swamy_name" placeholder="Peetam Name" required>
+    <input type="text" name="swamy_name" placeholder="Peetam Name / Swamy Name" required>
 
     <div class="date-time-row">
-      <label for="biksha_date">Date:</label>
-      <input type="date" id="biksha_date" name="biksha_date" required>
+      <label for="starting_date">From Date:</label>
+      <input type="date" id="from_date" name="from_date" required>
     </div>
 
     <div class="date-time-row">
-      <label for="biksha_time">Time:</label>
+      <label for="to_date">To Date:</label>
+      <input type="date" id="to_date" name="to_date" required>
+    </div>
+
+    <div class="date-time-row">
+      <label for="biksha_time">Starting Time:</label>
       <input type="time" id="biksha_time" name="biksha_time" required>
     </div>
 
@@ -140,6 +143,7 @@ button.submit-btn:hover {
     <input type="text" name="location" placeholder="Location" required>
     <input type="text" name="near_landmark" placeholder="Near Landmark">
     <input type="text" name="pincode" placeholder="Pincode">
+
     <button type="submit" class="submit-btn">Submit</button>
   </form>
 </div>

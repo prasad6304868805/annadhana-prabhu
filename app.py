@@ -1,6 +1,7 @@
 import os
 from flask import Flask, render_template, request, redirect
 from flask_sqlalchemy import SQLAlchemy
+from datetime import datetime
 
 # ------------------------
 # Flask app initialization
@@ -33,7 +34,8 @@ class Biksha(db.Model):
     __tablename__ = 'biksha'
     id = db.Column(db.Integer, primary_key=True)
     swamy_name = db.Column(db.String(100), nullable=False)
-    biksha_date = db.Column(db.String(20), nullable=False)
+    from_date = db.Column(db.String(20), nullable=False)
+    to_date = db.Column(db.String(20), nullable=True)
     biksha_time = db.Column(db.String(20), nullable=False)
     phone_number = db.Column(db.String(20), nullable=False)
     location = db.Column(db.String(200), nullable=False)
@@ -44,7 +46,8 @@ class Alpaharam(db.Model):
     __tablename__ = 'alpaharam'
     id = db.Column(db.Integer, primary_key=True)
     swamy_name = db.Column(db.String(100), nullable=False)
-    biksha_date = db.Column(db.String(20), nullable=False)
+    from_date = db.Column(db.String(20), nullable=False)
+    to_date = db.Column(db.String(20), nullable=True)
     biksha_time = db.Column(db.String(20), nullable=False)
     phone_number = db.Column(db.String(20), nullable=False)
     location = db.Column(db.String(200), nullable=False)
@@ -52,19 +55,15 @@ class Alpaharam(db.Model):
     pincode = db.Column(db.String(10), nullable=True)
 
 # ------------------------
-# Language selection route
-# ------------------------
-# @app.route('/')
-# def language():
-#     return render_template('language.html')  # page with English / Telugu buttons
-
-# ------------------------
-# English routes
+# Routes
 # ------------------------
 @app.route('/')
 def home():
     return render_template('home.html')
 
+# ------------------------
+# Pooja
+# ------------------------
 @app.route('/pooja')
 def pooja():
     poojas = Pooja.query.all()
@@ -87,9 +86,22 @@ def add_pooja():
         return redirect('/pooja')
     return render_template('add_pooja.html')
 
+# ------------------------
+# Biksha
+# ------------------------
 @app.route('/biksha')
 def biksha():
     bikshas = Biksha.query.all()
+    # Format dates
+    for b in bikshas:
+        try:
+            b.from_date_str = datetime.strptime(b.from_date, "%Y-%m-%d").strftime("%d|%m|%Y")
+        except:
+            b.from_date_str = b.from_date
+        try:
+            b.to_date_str = datetime.strptime(b.to_date, "%Y-%m-%d").strftime("%d|%m|%Y") if b.to_date else ""
+        except:
+            b.to_date_str = b.to_date or ""
     return render_template('biksha.html', bikshas=bikshas)
 
 @app.route('/add_biksha', methods=['GET', 'POST'])
@@ -97,7 +109,8 @@ def add_biksha():
     if request.method == 'POST':
         new_biksha = Biksha(
             swamy_name=request.form['swamy_name'],
-            biksha_date=request.form['biksha_date'],
+            from_date=request.form['from_date'],
+            to_date=request.form.get('to_date'),
             biksha_time=request.form['biksha_time'],
             phone_number=request.form['phone_number'],
             location=request.form['location'],
@@ -109,9 +122,22 @@ def add_biksha():
         return redirect('/biksha')
     return render_template('add_biksha.html')
 
+# ------------------------
+# Alpaharam
+# ------------------------
 @app.route('/alpaharam')
 def alpaharam():
     alpaharams = Alpaharam.query.all()
+    # Format dates
+    for a in alpaharams:
+        try:
+            a.from_date_str = datetime.strptime(a.from_date, "%Y-%m-%d").strftime("%d|%m|%Y")
+        except:
+            a.from_date_str = a.from_date
+        try:
+            a.to_date_str = datetime.strptime(a.to_date, "%Y-%m-%d").strftime("%d|%m|%Y") if a.to_date else ""
+        except:
+            a.to_date_str = a.to_date or ""
     return render_template('alpaharam.html', alpaharams=alpaharams)
 
 @app.route('/add_alpaharam', methods=['GET', 'POST'])
@@ -119,7 +145,8 @@ def add_alpaharam():
     if request.method == 'POST':
         new_alpaharam = Alpaharam(
             swamy_name=request.form['swamy_name'],
-            biksha_date=request.form['biksha_date'],
+            from_date=request.form['from_date'],
+            to_date=request.form.get('to_date'),
             biksha_time=request.form['biksha_time'],
             phone_number=request.form['phone_number'],
             location=request.form['location'],
@@ -132,83 +159,9 @@ def add_alpaharam():
     return render_template('add_alpaharam.html')
 
 # ------------------------
-# Telugu routes
-# ------------------------
-# @app.route('/home_te')
-# def home_te():
-#     return render_template('home_te.html')
-
-# @app.route('/pooja_te')
-# def pooja_te():
-#     poojas = Pooja.query.all()
-#     return render_template('pooja_te.html', poojas=poojas)
-
-# @app.route('/add_pooja_te', methods=['GET', 'POST'])
-# def add_pooja_te():
-#     if request.method == 'POST':
-#         new_pooja = Pooja(
-#             head_name=request.form['head_name'],
-#             pooja_date=request.form['pooja_date'],
-#             pooja_time=request.form['pooja_time'],
-#             phone_number=request.form['phone_number'],
-#             location=request.form['location'],
-#             near_landmark=request.form.get('near_landmark'),
-#             pincode=request.form.get('pincode')
-#         )
-#         db.session.add(new_pooja)
-#         db.session.commit()
-#         return redirect('/pooja_te')
-#     return render_template('add_pooja_te.html')
-
-# @app.route('/biksha_te')
-# def biksha_te():
-#     bikshas = Biksha.query.all()
-#     return render_template('biksha_te.html', bikshas=bikshas)
-
-# @app.route('/add_biksha_te', methods=['GET', 'POST'])
-# def add_biksha_te():
-#     if request.method == 'POST':
-#         new_biksha = Biksha(
-#             swamy_name=request.form['swamy_name'],
-#             biksha_date=request.form['biksha_date'],
-#             biksha_time=request.form['biksha_time'],
-#             phone_number=request.form['phone_number'],
-#             location=request.form['location'],
-#             near_landmark=request.form.get('near_landmark'),
-#             pincode=request.form.get('pincode')
-#         )
-#         db.session.add(new_biksha)
-#         db.session.commit()
-#         return redirect('/biksha_te')
-#     return render_template('add_biksha_te.html')
-
-# @app.route('/alpaharam_te')
-# def alpaharam_te():
-#     alpaharams = Alpaharam.query.all()
-#     return render_template('alpaharam_te.html', alpaharams=alpaharams)
-
-# @app.route('/add_alpaharam_te', methods=['GET', 'POST'])
-# def add_alpaharam_te():
-#     if request.method == 'POST':
-#         new_alpaharam = Alpaharam(
-#             swamy_name=request.form['swamy_name'],
-#             biksha_date=request.form['biksha_date'],
-#             biksha_time=request.form['biksha_time'],
-#             phone_number=request.form['phone_number'],
-#             location=request.form['location'],
-#             near_landmark=request.form.get('near_landmark'),
-#             pincode=request.form.get('pincode')
-#         )
-#         db.session.add(new_alpaharam)
-#         db.session.commit()
-#         return redirect('/alpaharam_te')
-#     return render_template('add_alpaharam_te.html')
-
-# ------------------------
 # Run app
 # ------------------------
 if __name__ == '__main__':
     with app.app_context():
-        db.create_all()  # creates tables if not exist
-
+        db.create_all()  # create tables if not exist
     app.run(debug=True, host='0.0.0.0', port=int(os.environ.get('PORT', 5001)))
