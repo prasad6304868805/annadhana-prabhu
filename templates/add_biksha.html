@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Register Biksha</title>
+<title>Register Biksha - Dark Mode</title>
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -21,7 +21,7 @@ html, body {
 .card {
   width: 100%;
   max-width: 400px;
-  aspect-ratio: 9/16; /* 9:16 card */
+  aspect-ratio: 9/16;
   background: #1e1e1e; /* Dark card background */
   border-radius: 25px;
   box-shadow: 0 10px 25px rgba(0,0,0,0.7);
@@ -30,6 +30,7 @@ html, body {
   flex-direction: column;
   position: relative;
   overflow-y: auto;
+  user-select: none; /* prevent text selection during long press */
 }
 
 .back-btn {
@@ -74,7 +75,7 @@ input {
   border-radius: 12px;
   font-size: 15px;
   width: 100%;
-  background: #2c2c2c; /* Dark input */
+  background: #2c2c2c;
   color: #ffe0b2;
 }
 
@@ -120,7 +121,7 @@ button.submit-btn:hover {
 </head>
 <body>
 
-<div class="card">
+<div class="card" id="registerBikshaCard">
   <button class="back-btn" onclick="window.location.href='{{ url_for('biksha') }}'">⬅ Back</button>
 
   <h2>Register Biksha</h2>
@@ -128,7 +129,7 @@ button.submit-btn:hover {
     <input type="text" name="swamy_name" placeholder="Peetam Name / Swamy Name" required>
 
     <div class="date-time-row">
-      <label for="starting_date">From Date:</label>
+      <label for="from_date">From Date:</label>
       <input type="date" id="from_date" name="from_date" required>
     </div>
 
@@ -150,6 +151,36 @@ button.submit-btn:hover {
     <button type="submit" class="submit-btn">Submit</button>
   </form>
 </div>
+
+<script>
+// Set default date and time
+const today = new Date();
+document.getElementById('from_date').valueAsDate = today;
+document.getElementById('to_date').valueAsDate = today;
+document.getElementById('biksha_time').value = today.toTimeString().slice(0,5);
+
+// Long press detection for switching to light mode
+let pressTimer;
+const registerCard = document.getElementById('registerBikshaCard');
+
+registerCard.addEventListener('mousedown', startPress);
+registerCard.addEventListener('touchstart', startPress);
+registerCard.addEventListener('mouseup', cancelPress);
+registerCard.addEventListener('mouseleave', cancelPress);
+registerCard.addEventListener('touchend', cancelPress);
+registerCard.addEventListener('touchcancel', cancelPress);
+
+function startPress(e) {
+  if (e.type === 'mousedown' && e.button !== 0) return; // left click only
+  pressTimer = setTimeout(() => {
+    window.location.href = '{{ url_for("add_bikshal") }}'; // Light mode version
+  }, 1000); // 1 second
+}
+
+function cancelPress() {
+  clearTimeout(pressTimer);
+}
+</script>
 
 </body>
 </html>

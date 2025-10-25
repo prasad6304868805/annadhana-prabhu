@@ -3,20 +3,21 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Pooja List - Dark Mode</title>
+<title>Pooja List - Light Mode</title>
 <style>
+/* --- Light Mode Variables --- */
 :root {
-  --bg-color: #121212;
-  --card-bg: #1e1e1e;
-  --text-color: #ffffff;
-  --primary-color: #ff5722;
-  --secondary-color: #ff7043;
-  --btn-bg: #ff5722;
-  --btn-hover-bg: #ff7043;
-  --input-bg: #2c2c2c;
-  --input-text: #fff;
-  --border-color: #333;
-  --no-data-color: #ff6f61;
+  --bg-color: #fdfcf8;
+  --card-bg: #fff8e7;
+  --text-color: #3b2408;
+  --primary-color: #ff9800;
+  --secondary-color: #f57c00;
+  --btn-bg: linear-gradient(45deg,#fbb74b,#ffc107);
+  --btn-hover-bg: linear-gradient(45deg,#ffca28,#ffd54f);
+  --input-bg: #fff3d0;
+  --input-text: #3b2408;
+  --border-color: #ddd0a0;
+  --no-data-color: #ff7043;
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -35,7 +36,7 @@ body {
 .app-card {
   width: 100%;
   max-width: 400px;
-  aspect-ratio: 9/16;
+  height: 711px; /* 9:16 ratio */
   background: var(--card-bg);
   display: flex;
   flex-direction: column;
@@ -43,8 +44,7 @@ body {
   position: relative;
   overflow: hidden;
   border-radius: 25px;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.7);
-  user-select: none; /* prevent text selection on long press */
+  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
 }
 
 .back-btn {
@@ -94,10 +94,10 @@ body {
 
 .card {
   width: 95%;
-  background: #2a2a2a;
+  background: #fff3d0;
   border-radius: 20px;
   padding: 15px 10px;
-  box-shadow: 0 6px 15px rgba(0,0,0,0.6);
+  box-shadow: 0 6px 15px rgba(0,0,0,0.1);
   margin: 8px auto;
   text-align: center;
 }
@@ -117,7 +117,7 @@ body {
 }
 .card td {
   padding: 6px 8px;
-  border-bottom: 1px solid var(--border-color);
+  border-bottom: 1px solid rgba(0,0,0,0.1);
   color: var(--text-color);
   text-align: left;
 }
@@ -167,7 +167,7 @@ body {
 <body>
 
 <div class="app-card" id="appCard">
-  <button class="back-btn" onclick="window.location.href='{{ url_for('home') }}'">⬅ Back</button>
+  <button class="back-btn" onclick="window.location.href='{{ url_for('homel') }}'">⬅ Back</button>
 
   <div class="search-box">
     <input type="text" id="searchInput" placeholder="Search..." oninput="search()">
@@ -193,8 +193,8 @@ body {
   </div>
 
   <div class="bottom-btns">
-    <button onclick="window.location.href='{{ url_for('home') }}'">Home</button>
-    <button onclick="window.location.href='{{ url_for('add_pooja') }}'">Register</button>
+    <button onclick="window.location.href='{{ url_for('homel') }}'">Home</button>
+    <button onclick="window.location.href='{{ url_for('add_poojal') }}'">Register</button>
   </div>
 </div>
 
@@ -223,7 +223,7 @@ function search() {
   }
 }
 
-// Long press to switch to light mode
+// Long press to switch to Dark Mode Pooja List
 let pressTimer;
 const appCard = document.getElementById('appCard');
 appCard.addEventListener('mousedown', startPress);
@@ -236,13 +236,14 @@ appCard.addEventListener('touchcancel', cancelPress);
 function startPress(e) {
   if (e.type === 'mousedown' && e.button !== 0) return;
   pressTimer = setTimeout(() => {
-    window.location.href = '{{ url_for("poojal") }}'; // Light mode Pooja list page
-  }, 1000);
+    window.location.href = '{{ url_for("pooja") }}';
+  }, 1000); // 1 second
 }
 
 function cancelPress() {
   clearTimeout(pressTimer);
 }
 </script>
+
 </body>
 </html>

@@ -3,22 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Pooja List - Dark Mode</title>
+<title>Alpaharam - Light Mode</title>
 <style>
-:root {
-  --bg-color: #121212;
-  --card-bg: #1e1e1e;
-  --text-color: #ffffff;
-  --primary-color: #ff5722;
-  --secondary-color: #ff7043;
-  --btn-bg: #ff5722;
-  --btn-hover-bg: #ff7043;
-  --input-bg: #2c2c2c;
-  --input-text: #fff;
-  --border-color: #333;
-  --no-data-color: #ff6f61;
-}
-
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
 body {
@@ -26,27 +12,29 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  background: var(--bg-color);
+  background: #fdfcf8; /* Light background */
   height: 100vh;
   width: 100%;
-  color: var(--text-color);
+  color: #3b2408;
 }
 
+/* App container (9:16 ratio) */
 .app-card {
   width: 100%;
   max-width: 400px;
-  aspect-ratio: 9/16;
-  background: var(--card-bg);
+  height: 711px;
+  background: #fff8e1; /* Light card background */
   display: flex;
   flex-direction: column;
   padding: 15px;
   position: relative;
   overflow: hidden;
   border-radius: 25px;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.7);
-  user-select: none; /* prevent text selection on long press */
+  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+  user-select: none; /* Prevent text selection during long press */
 }
 
+/* Back button */
 .back-btn {
   position: absolute;
   top: 10px;
@@ -54,18 +42,20 @@ body {
   padding: 8px 14px;
   border: none;
   border-radius: 12px;
-  background: var(--btn-bg);
-  color: var(--text-color);
+  background: linear-gradient(45deg, #ffcc80, #ffb74d);
+  color: #4e342e;
   cursor: pointer;
   font-size: 14px;
+  font-weight: 600;
   transition: all 0.3s ease;
   z-index: 2;
 }
 .back-btn:hover {
   transform: scale(1.05);
-  background: var(--btn-hover-bg);
+  background: linear-gradient(45deg, #ffb74d, #ff9800);
 }
 
+/* Search box */
 .search-box {
   position: absolute;
   top: 10px;
@@ -75,13 +65,14 @@ body {
 .search-box input {
   padding: 6px 10px;
   border-radius: 12px;
-  border: 1px solid var(--border-color);
-  background: var(--input-bg);
-  color: var(--input-text);
+  border: 1px solid #ccc;
   font-size: 13px;
   width: 120px;
+  background: #fff;
+  color: #5d4037;
 }
 
+/* Card container */
 .card-container {
   flex: 1;
   margin-top: 50px;
@@ -92,48 +83,52 @@ body {
 }
 .card-container::-webkit-scrollbar { width: 0; background: transparent; }
 
+/* Individual card */
 .card {
   width: 95%;
-  background: #2a2a2a;
+  background: #fffbea;
   border-radius: 20px;
   padding: 15px 10px;
-  box-shadow: 0 6px 15px rgba(0,0,0,0.6);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
   margin: 8px auto;
-  text-align: center;
+  text-align: left;
 }
 
 .card h3 {
-  color: var(--primary-color);
+  color: #e65100;
   font-size: 16px;
   font-weight: 700;
-  text-align: center;
   margin-bottom: 10px;
+  text-align: center;
 }
 
+/* Table inside card */
 .card table {
   width: 100%;
   border-collapse: collapse;
   font-size: 13px;
 }
 .card td {
-  padding: 6px 8px;
-  border-bottom: 1px solid var(--border-color);
-  color: var(--text-color);
+  padding: 4px 6px;
+  border-bottom: 1px solid rgba(0,0,0,0.1);
+  color: #5d4037;
   text-align: left;
 }
 .card td:first-child {
   font-weight: 700;
-  color: var(--secondary-color);
+  color: #e65100;
   width: 40%;
 }
 
+/* No data */
 .no-data {
   margin-top: 30px;
-  color: var(--no-data-color);
+  color: #e65100;
   font-size: 14px;
   text-align: center;
 }
 
+/* Bottom buttons */
 .bottom-btns {
   width: 100%;
   display: flex;
@@ -146,20 +141,22 @@ body {
   padding: 10px 0;
   border: none;
   border-radius: 12px;
-  background: var(--btn-bg);
-  color: var(--text-color);
+  background: linear-gradient(45deg, #ffcc80, #ffb74d);
+  color: #4e342e;
   font-size: 14px;
   cursor: pointer;
   transition: all 0.3s ease;
+  font-weight: 600;
 }
 .bottom-btns button:hover {
   transform: scale(1.05);
-  background: var(--btn-hover-bg);
+  background: linear-gradient(45deg, #ffb74d, #ff9800);
 }
 
+/* Responsive adjustments */
 @media screen and (max-width: 360px) {
   .search-box input { width: 100px; font-size: 12px; padding: 4px 8px; }
-  .card td, .card h3 { font-size: 12px; }
+  .card td { font-size: 12px; }
   .bottom-btns button { font-size: 12px; padding: 8px 0; }
 }
 </style>
@@ -174,27 +171,28 @@ body {
   </div>
 
   <div class="card-container" id="cardContainer">
-    {% if poojas %}
-      {% for p in poojas %}
+    {% if alpaharams %}
+      {% for a in alpaharams %}
         <div class="card">
-          <h3>{{ p.head_name }}</h3>
+          <h3>{{ a.swamy_name }}</h3>
           <table>
-            <tr><td>Date</td><td>{{ p.pooja_date }}</td></tr>
-            <tr><td>Time</td><td>{{ p.pooja_time }}</td></tr>
-            <tr><td>Location</td><td>{{ p.location }}</td></tr>
-            <tr><td>Landmark</td><td>{{ p.near_landmark }}</td></tr>
-            <tr><td>Pincode</td><td>{{ p.pincode }}</td></tr>
+            <tr><td>From Date</td><td>{{ a.from_date }}</td></tr>
+            <tr><td>To Date</td><td>{{ a.to_date }}</td></tr>
+            <tr><td>Time</td><td>{{ a.biksha_time }}</td></tr>
+            <tr><td>Location</td><td>{{ a.location }}</td></tr>
+            <tr><td>Landmark</td><td>{{ a.near_landmark }}</td></tr>
+            <tr><td>Pincode</td><td>{{ a.pincode }}</td></tr>
           </table>
         </div>
       {% endfor %}
     {% else %}
-      <div class="no-data">No Pooja entries found</div>
+      <div class="no-data">No Alpaharam entries found.</div>
     {% endif %}
   </div>
 
   <div class="bottom-btns">
     <button onclick="window.location.href='{{ url_for('home') }}'">Home</button>
-    <button onclick="window.location.href='{{ url_for('add_pooja') }}'">Register</button>
+    <button onclick="window.location.href='{{ url_for('add_alpaharaml') }}'">Register</button>
   </div>
 </div>
 
@@ -202,30 +200,32 @@ body {
 const container = document.getElementById('cardContainer');
 const allCardsOriginal = Array.from(document.querySelectorAll('.card'));
 
+// Search functionality
 function search() {
-  const query = document.getElementById('searchInput').value.toLowerCase().trim();
-  container.innerHTML = '';
+    const query = document.getElementById('searchInput').value.toLowerCase().trim();
+    container.innerHTML = '';
 
-  if (!query) {
-    allCardsOriginal.forEach(c => container.appendChild(c));
-    return;
-  }
+    if (!query) {
+        allCardsOriginal.forEach(c => container.appendChild(c));
+        return;
+    }
 
-  const filtered = allCardsOriginal.filter(card => {
-    const texts = Array.from(card.querySelectorAll('h3, td')).map(el => el.innerText.toLowerCase());
-    return texts.some(text => text.includes(query));
-  });
+    const filtered = allCardsOriginal.filter(card => {
+        const texts = Array.from(card.querySelectorAll('h3, td')).map(el => el.innerText.toLowerCase());
+        return texts.some(text => text.includes(query));
+    });
 
-  if (filtered.length === 0) {
-    container.innerHTML = '<div class="no-data">No matching Pooja entries found.</div>';
-  } else {
-    filtered.forEach(c => container.appendChild(c));
-  }
+    if (filtered.length === 0) {
+        container.innerHTML = '<div class="no-data">No matching Alpaharam entries found.</div>';
+    } else {
+        filtered.forEach(c => container.appendChild(c));
+    }
 }
 
-// Long press to switch to light mode
+// Long press to switch to dark mode
 let pressTimer;
 const appCard = document.getElementById('appCard');
+
 appCard.addEventListener('mousedown', startPress);
 appCard.addEventListener('touchstart', startPress);
 appCard.addEventListener('mouseup', cancelPress);
@@ -234,15 +234,16 @@ appCard.addEventListener('touchend', cancelPress);
 appCard.addEventListener('touchcancel', cancelPress);
 
 function startPress(e) {
-  if (e.type === 'mousedown' && e.button !== 0) return;
-  pressTimer = setTimeout(() => {
-    window.location.href = '{{ url_for("poojal") }}'; // Light mode Pooja list page
-  }, 1000);
+    if (e.type === 'mousedown' && e.button !== 0) return; // left click only
+    pressTimer = setTimeout(() => {
+        window.location.href = '{{ url_for("alpaharam") }}'; // Dark mode page
+    }, 1000); // 1 second long press
 }
 
 function cancelPress() {
-  clearTimeout(pressTimer);
+    clearTimeout(pressTimer);
 }
 </script>
+
 </body>
 </html>

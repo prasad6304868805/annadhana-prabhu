@@ -3,26 +3,27 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Devotional App - Dark Mode</title>
+<title>Devotional App - Light Mode</title>
 <style>
 :root {
-  --bg-color: #121212;
-  --title-color: #ffe0b2;
-  --btn-bg: linear-gradient(45deg,#ff7043,#ff9800);
-  --btn-hover-bg: linear-gradient(45deg,#ff8f00,#ffc107);
-  --btn-color: #fff;
-  --shadow-color: rgba(0,0,0,0.5);
+  --bg-color: #fdfcf8;           
+  --title-color: #3b2408;        
+  --button-bg: rgba(255,248,220,0.8);
+  --button-color: #3b2408;
+  --button-hover-bg: rgba(255,213,128,0.9);
+  --button-hover-color: #000;
+  --shadow-color: rgba(0,0,0,0.25);
 }
 
 html, body {
   width: 100%;
   height: 100%;
   font-family: "Poppins", sans-serif;
-  margin: 0;
   display: flex;
   justify-content: center;
   align-items: center;
   background: var(--bg-color);
+  margin: 0;
 }
 
 .app-container {
@@ -32,7 +33,7 @@ html, body {
   border-radius: 30px;
   overflow: hidden;
   position: relative;
-  background: url("{{ url_for('static', filename='home.png') }}") no-repeat center center;
+  background: url("{{ url_for('static', filename='home1.png') }}") no-repeat center center;
   background-size: cover;
   display: flex;
   flex-direction: column;
@@ -45,15 +46,16 @@ html, body {
 
 .title-block {
   text-align: center;
-  margin-top: 50px;
+  margin-top: 20px;
 }
 
 .title {
   color: var(--title-color);
-  font-size: 32px;
+  font-size: 36px;
   font-weight: 700;
-  text-shadow: 2px 2px 8px var(--shadow-color);
+  text-shadow: 1px 1px 6px rgba(255,255,255,0.7);
   line-height: 1.2;
+  white-space: nowrap;
 }
 
 .buttons {
@@ -70,51 +72,53 @@ html, body {
   margin: 10px 0;
   border: none;
   border-radius: 40px;
-  background: var(--btn-bg);
-  color: var(--btn-color);
+  background: var(--button-bg);
+  color: var(--button-color);
   font-size: 18px;
   font-weight: 600;
   cursor: pointer;
-  box-shadow: 0 6px 18px var(--shadow-color);
+  box-shadow: 0 4px 12px var(--shadow-color);
   transition: all 0.3s ease;
+  backdrop-filter: blur(8px);
 }
 
 .button:hover {
-  background: var(--btn-hover-bg);
+  background: var(--button-hover-bg);
+  color: var(--button-hover-color);
   transform: scale(1.05);
-  box-shadow: 0 8px 22px var(--shadow-color);
+  box-shadow: 0 6px 18px var(--shadow-color);
 }
 
 @media (max-width: 360px) {
   .app-container { max-width: 100%; padding-bottom: 40px; }
   .button { width: 90%; font-size: 16px; }
-  .title { font-size: 26px; }
+  .title { font-size: 30px; }
 }
 </style>
 </head>
 <body>
 
 <div class="app-container">
-
   <div class="title-block">
     <div class="title">Annadhana Prabhuva</div>
   </div>
 
   <div class="buttons">
-    <button class="button" onclick="location.href='{{ url_for('pooja') }}'">Pooja</button>
-    <button class="button" onclick="location.href='{{ url_for('biksha') }}'">Biksha</button>
-    <button class="button" onclick="location.href='{{ url_for('alpaharam') }}'">Alpaharam</button>
+    <button class="button" onclick="location.href='{{ url_for('poojal') }}'">Pooja</button>
+    <button class="button" onclick="location.href='{{ url_for('bikshal') }}'">Biksha</button>
+    <button class="button" onclick="location.href='{{ url_for('alpaharaml') }}'">Alpaharam</button>
   </div>
 </div>
 
 <script>
-// Long press to switch to Light Mode Home
+// Long press detection for dark mode
 let pressTimer;
 const appContainer = document.querySelector('.app-container');
 const longPressDuration = 1000; // 1 second
 
 appContainer.addEventListener('mousedown', startPress);
 appContainer.addEventListener('touchstart', startPress);
+
 appContainer.addEventListener('mouseup', cancelPress);
 appContainer.addEventListener('mouseleave', cancelPress);
 appContainer.addEventListener('touchend', cancelPress);
@@ -123,7 +127,7 @@ appContainer.addEventListener('touchcancel', cancelPress);
 function startPress(e) {
   if (e.type === 'mousedown' && e.button !== 0) return;
   pressTimer = setTimeout(() => {
-    window.location.href = '{{ url_for("homel") }}';
+    window.location.href = '{{ url_for("home") }}';
   }, longPressDuration);
 }
 

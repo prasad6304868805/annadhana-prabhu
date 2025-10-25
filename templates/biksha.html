@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Biksha List</title>
+<title>Biksha List - Dark Mode</title>
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -12,7 +12,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  background: #121212; /* Dark background */
+  background: #121212;
   height: 100vh;
   width: 100%;
   color: #ffe0b2;
@@ -21,8 +21,8 @@ body {
 .app-card {
   width: 100%;
   max-width: 400px;
-  height: 711px;
-  background: #1e1e1e; /* Dark card background */
+  aspect-ratio: 9/16;
+  background: #1e1e1e;
   display: flex;
   flex-direction: column;
   padding: 15px;
@@ -30,6 +30,7 @@ body {
   overflow: hidden;
   border-radius: 25px;
   box-shadow: 0 10px 25px rgba(0,0,0,0.7);
+  user-select: none; /* Prevent text selection on long press */
 }
 
 .back-btn {
@@ -44,6 +45,7 @@ body {
   cursor: pointer;
   font-size: 14px;
   z-index: 2;
+  transition: all 0.3s ease;
 }
 .back-btn:hover {
   transform: scale(1.05);
@@ -78,7 +80,7 @@ body {
 
 .card {
   width: 95%;
-  background: #2c2c2c; /* Dark card background */
+  background: #2c2c2c;
   border-radius: 20px;
   padding: 15px 10px;
   box-shadow: 0 6px 15px rgba(0,0,0,0.6);
@@ -150,7 +152,7 @@ body {
 </head>
 <body>
 
-<div class="app-card">
+<div class="app-card" id="appCard">
   <button class="back-btn" onclick="window.location.href='{{ url_for('home') }}'">⬅ Back</button>
 
   <div class="search-box">
@@ -207,6 +209,28 @@ function search() {
     filtered.forEach(c => container.appendChild(c));
   }
 }
+
+// Long press to switch to light mode
+let pressTimer;
+const appCard = document.getElementById('appCard');
+appCard.addEventListener('mousedown', startPress);
+appCard.addEventListener('touchstart', startPress);
+appCard.addEventListener('mouseup', cancelPress);
+appCard.addEventListener('mouseleave', cancelPress);
+appCard.addEventListener('touchend', cancelPress);
+appCard.addEventListener('touchcancel', cancelPress);
+
+function startPress(e) {
+  if (e.type === 'mousedown' && e.button !== 0) return; // only left click
+  pressTimer = setTimeout(() => {
+    window.location.href = '{{ url_for("bikshal") }}'; // Light mode page
+  }, 1000); // 1 second
+}
+
+function cancelPress() {
+  clearTimeout(pressTimer);
+}
 </script>
+
 </body>
 </html>
