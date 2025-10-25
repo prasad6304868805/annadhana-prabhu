@@ -11,7 +11,7 @@ html, body {
   width: 100%;
   height: 100%;
   font-family: "Poppins", sans-serif;
-  background: #121212; /* Dark background */
+  background: #121212;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -22,7 +22,7 @@ html, body {
   width: 100%;
   max-width: 400px;
   aspect-ratio: 9/16;
-  background: #1e1e1e; /* Dark card background */
+  background: #1e1e1e;
   border-radius: 25px;
   box-shadow: 0 10px 25px rgba(0,0,0,0.7);
   padding: 20px;
@@ -30,7 +30,7 @@ html, body {
   flex-direction: column;
   position: relative;
   overflow-y: auto;
-  user-select: none; /* prevent text selection during long press */
+  user-select: none;
 }
 
 .back-btn {
@@ -54,7 +54,7 @@ html, body {
 
 h2 {
   text-align: center;
-  color: #ffcc80; /* Light golden for header */
+  color: #ffcc80;
   font-size: 22px;
   margin-top: 60px;
   margin-bottom: 20px;
@@ -83,14 +83,12 @@ input {
   display: flex;
   gap: 10px;
 }
-
 .date-time-row label {
   font-weight: 600;
   font-size: 15px;
   flex: 1;
   align-self: center;
 }
-
 .date-time-row input {
   flex: 2;
 }
@@ -145,36 +143,61 @@ button.submit-btn:hover {
 
     <input type="tel" name="phone_number" placeholder="Phone Number" required>
     <input type="text" name="location" placeholder="Location" required>
-    <input type="text" name="near_landmark" placeholder="Near Landmark">
-    <input type="text" name="pincode" placeholder="Pincode">
+    <input type="text" name="near_landmark" placeholder="Near Landmark" required>
+    <input type="text" name="pincode" placeholder="Pincode" required>
 
     <button type="submit" class="submit-btn">Submit</button>
   </form>
 </div>
 
 <script>
-// Set default date and time
-const today = new Date();
-document.getElementById('from_date').valueAsDate = today;
-document.getElementById('to_date').valueAsDate = today;
-document.getElementById('biksha_time').value = today.toTimeString().slice(0,5);
+// Date Validation
+const fromDateInput = document.getElementById('from_date');
+const toDateInput = document.getElementById('to_date');
 
-// Long press detection for switching to light mode
+// From Date cannot be past
+fromDateInput.addEventListener('focus', () => {
+  const today = new Date().toISOString().split('T')[0];
+  fromDateInput.min = today;
+});
+
+// To Date must be same or after From Date
+fromDateInput.addEventListener('change', () => {
+  if (fromDateInput.value) {
+    toDateInput.min = fromDateInput.value;
+    if (toDateInput.value && toDateInput.value < fromDateInput.value) {
+      toDateInput.value = '';
+    }
+  } else {
+    toDateInput.min = '';
+  }
+});
+
+toDateInput.addEventListener('focus', () => {
+  if (fromDateInput.value) {
+    toDateInput.min = fromDateInput.value;
+  } else {
+    const today = new Date().toISOString().split('T')[0];
+    toDateInput.min = today;
+  }
+});
+
+// Long press to switch to Light Mode
 let pressTimer;
-const registerCard = document.getElementById('registerBikshaCard');
+const card = document.getElementById('registerBikshaCard');
 
-registerCard.addEventListener('mousedown', startPress);
-registerCard.addEventListener('touchstart', startPress);
-registerCard.addEventListener('mouseup', cancelPress);
-registerCard.addEventListener('mouseleave', cancelPress);
-registerCard.addEventListener('touchend', cancelPress);
-registerCard.addEventListener('touchcancel', cancelPress);
+card.addEventListener('mousedown', startPress);
+card.addEventListener('touchstart', startPress);
+card.addEventListener('mouseup', cancelPress);
+card.addEventListener('mouseleave', cancelPress);
+card.addEventListener('touchend', cancelPress);
+card.addEventListener('touchcancel', cancelPress);
 
 function startPress(e) {
-  if (e.type === 'mousedown' && e.button !== 0) return; // left click only
+  if (e.type === 'mousedown' && e.button !== 0) return;
   pressTimer = setTimeout(() => {
     window.location.href = '{{ url_for("add_bikshal") }}'; // Light mode version
-  }, 1000); // 1 second
+  }, 1000);
 }
 
 function cancelPress() {

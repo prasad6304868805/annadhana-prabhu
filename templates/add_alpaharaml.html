@@ -91,6 +91,11 @@ input {
   box-shadow: inset 0 1px 3px rgba(0,0,0,0.05);
 }
 
+input:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 6px rgba(230,81,0,0.4);
+}
+
 .date-time-row {
   display: flex;
   gap: 10px;
@@ -137,10 +142,10 @@ button.submit-btn:hover {
 <body>
 
 <div class="card">
-  <button class="back-btn" onclick="window.location.href='{{ url_for('alpaharam') }}'">⬅ Back</button>
+  <button class="back-btn" onclick="window.location.href='{{ url_for('alpaharaml') }}'">⬅ Back</button>
 
   <h2>Add Alpaharam</h2>
-  <form action="{{ url_for('add_alpaharam') }}" method="POST">
+  <form action="{{ url_for('add_alpaharaml') }}" method="POST">
     <input type="text" name="swamy_name" placeholder="Peetam Name / Swamy Name" required>
 
     <div class="date-time-row">
@@ -160,24 +165,46 @@ button.submit-btn:hover {
 
     <input type="tel" name="phone_number" placeholder="Phone Number" required>
     <input type="text" name="location" placeholder="Location" required>
-    <input type="text" name="near_landmark" placeholder="Near Landmark">
-    <input type="text" name="pincode" placeholder="Pincode">
+    <input type="text" name="near_landmark" placeholder="Near Landmark" required>
+    <input type="text" name="pincode" placeholder="Pincode" required>
 
     <button type="submit" class="submit-btn">Add Alpaharam</button>
   </form>
 </div>
 
 <script>
-// Auto-fill current date and time
-const fromDate = document.getElementById('from_date');
-const toDate = document.getElementById('to_date');
-const timeInput = document.getElementById('biksha_time');
-const now = new Date();
-fromDate.valueAsDate = now;
-toDate.valueAsDate = now;
-timeInput.value = now.toTimeString().slice(0,5);
+// Date Validation
+const fromDateInput = document.getElementById('from_date');
+const toDateInput = document.getElementById('to_date');
 
-// Long press to switch to Dark Mode Add Alpaharam
+// From Date cannot be past
+fromDateInput.addEventListener('focus', () => {
+  const today = new Date().toISOString().split('T')[0];
+  fromDateInput.min = today;
+});
+
+// To Date must be same or after From Date
+fromDateInput.addEventListener('change', () => {
+  if (fromDateInput.value) {
+    toDateInput.min = fromDateInput.value;
+    if (toDateInput.value && toDateInput.value < fromDateInput.value) {
+      toDateInput.value = '';
+    }
+  } else {
+    toDateInput.min = '';
+  }
+});
+
+toDateInput.addEventListener('focus', () => {
+  if (fromDateInput.value) {
+    toDateInput.min = fromDateInput.value;
+  } else {
+    const today = new Date().toISOString().split('T')[0];
+    toDateInput.min = today;
+  }
+});
+
+// Long press to switch to Dark Mode
 let pressTimer;
 const card = document.querySelector('.card');
 card.addEventListener('mousedown', startPress);

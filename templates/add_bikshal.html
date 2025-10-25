@@ -14,6 +14,7 @@
   --input-border: #d7ccc8;
   --btn-bg: linear-gradient(45deg,#ffcc80,#ffb74d);
   --btn-hover-bg: linear-gradient(45deg,#ffb74d,#ff9800);
+  --error-color: #ff4c4c;
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -78,9 +79,10 @@ form {
   flex-direction: column;
   gap: 12px;
   padding: 0 10px;
+  position: relative;
 }
 
-input {
+input, select {
   padding: 12px;
   border: 1px solid var(--input-border);
   border-radius: 12px;
@@ -89,6 +91,21 @@ input {
   background: var(--input-bg);
   color: var(--text-color);
   box-shadow: inset 0 1px 3px rgba(0,0,0,0.05);
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+input.error, select.error {
+  border-color: var(--error-color);
+  animation: shake 0.3s;
+}
+
+@keyframes shake {
+  0% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  50% { transform: translateX(5px); }
+  75% { transform: translateX(-5px); }
+  100% { transform: translateX(0); }
 }
 
 .date-time-row {
@@ -137,49 +154,70 @@ button.submit-btn:hover {
 <body>
 
 <div class="card">
-  <button class="back-btn" onclick="window.location.href='{{ url_for('biksha') }}'">⬅ Back</button>
+  <button class="back-btn" onclick="window.location.href='{{ url_for('bikshal') }}'">⬅ Back</button>
 
   <h2>Register Biksha</h2>
-  <form action="{{ url_for('add_biksha') }}" method="POST">
+  <form id="bikshaForm" action="{{ url_for('add_bikshal') }}" method="POST">
     <input type="text" name="swamy_name" placeholder="Peetam Name / Swamy Name" required>
-
+    
     <div class="date-time-row">
       <label for="from_date">From Date:</label>
       <input type="date" id="from_date" name="from_date" required>
     </div>
-
+    
     <div class="date-time-row">
       <label for="to_date">To Date:</label>
       <input type="date" id="to_date" name="to_date" required>
     </div>
-
+    
     <div class="date-time-row">
       <label for="biksha_time">Starting Time:</label>
       <input type="time" id="biksha_time" name="biksha_time" required>
     </div>
-
+    
     <input type="tel" name="phone_number" placeholder="Phone Number" required>
     <input type="text" name="location" placeholder="Location" required>
-    <input type="text" name="near_landmark" placeholder="Near Landmark">
-    <input type="text" name="pincode" placeholder="Pincode">
+    <input type="text" name="near_landmark" placeholder="Near Landmark" required>
+    <input type="text" name="pincode" placeholder="Pincode" required>
 
     <button type="submit" class="submit-btn">Submit</button>
   </form>
 </div>
 
 <script>
-// Auto-fill current date and time
-const fromDate = document.getElementById('from_date');
-const toDate = document.getElementById('to_date');
-const timeInput = document.getElementById('biksha_time');
-const now = new Date();
-fromDate.valueAsDate = now;
-toDate.valueAsDate = now;
-timeInput.value = now.toTimeString().slice(0,5);
+// Date validation logic
+const fromDateInput = document.getElementById('from_date');
+const toDateInput = document.getElementById('to_date');
 
-// Long press to switch to Dark Mode Add Biksha
+fromDateInput.addEventListener('focus', () => {
+  const today = new Date().toISOString().split('T')[0];
+  fromDateInput.min = today;
+});
+
+fromDateInput.addEventListener('change', () => {
+  if (fromDateInput.value) {
+    toDateInput.min = fromDateInput.value;
+    if (toDateInput.value && toDateInput.value < fromDateInput.value) {
+      toDateInput.value = '';
+    }
+  } else {
+    toDateInput.min = '';
+  }
+});
+
+toDateInput.addEventListener('focus', () => {
+  if (fromDateInput.value) {
+    toDateInput.min = fromDateInput.value;
+  } else {
+    const today = new Date().toISOString().split('T')[0];
+    toDateInput.min = today;
+  }
+});
+
+// Long press to switch to Dark Mode
 let pressTimer;
 const card = document.querySelector('.card');
+
 card.addEventListener('mousedown', startPress);
 card.addEventListener('touchstart', startPress);
 card.addEventListener('mouseup', cancelPress);

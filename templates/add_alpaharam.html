@@ -11,7 +11,7 @@ html, body {
   width: 100%;
   height: 100%;
   font-family: "Poppins", sans-serif;
-  background: #121212; /* Dark background */
+  background: #121212;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -21,8 +21,8 @@ html, body {
 .card {
   width: 100%;
   max-width: 400px;
-  aspect-ratio: 9/16; /* 9:16 card */
-  background: #1e1e1e; /* Dark card background */
+  aspect-ratio: 9/16;
+  background: #1e1e1e;
   border-radius: 25px;
   box-shadow: 0 10px 25px rgba(0,0,0,0.7);
   padding: 20px;
@@ -30,7 +30,7 @@ html, body {
   flex-direction: column;
   position: relative;
   overflow-y: auto;
-  user-select: none; /* prevent text selection during long press */
+  user-select: none;
 }
 
 .back-btn {
@@ -54,7 +54,7 @@ html, body {
 
 h2 {
   text-align: center;
-  color: #ffcc80; /* Header color */
+  color: #ffcc80;
   font-size: 22px;
   margin-top: 60px;
   margin-bottom: 20px;
@@ -69,14 +69,20 @@ form {
   padding: 0 10px;
 }
 
-input {
+input, select {
   padding: 12px;
   border: 1px solid #555;
   border-radius: 12px;
   font-size: 15px;
   width: 100%;
-  background: #2c2c2c; /* Dark input */
+  background: #2c2c2c;
   color: #ffe0b2;
+  outline: none;
+}
+
+input:focus, select:focus {
+  border-color: #ffcc80;
+  box-shadow: 0 0 6px rgba(255,204,128,0.4);
 }
 
 .date-time-row {
@@ -115,7 +121,7 @@ button.submit-btn:hover {
 
 @media (max-width: 400px) {
   .date-time-row { flex-direction: column; }
-  .date-time-row label, .date-time-row input { flex: 1; width: 100%; }
+  .date-time-row label, .date-time-row input { width: 100%; }
 }
 </style>
 </head>
@@ -125,8 +131,10 @@ button.submit-btn:hover {
   <button class="back-btn" onclick="window.location.href='{{ url_for('alpaharam') }}'">⬅ Back</button>
 
   <h2>Add Alpaharam</h2>
-  <form action="{{ url_for('add_alpaharam') }}" method="POST">
-    <input type="text" name="swamy_name" placeholder="Peetam Name / Swamy Name" required>
+  <form id="alpaharamForm" action="{{ url_for('add_alpaharam') }}" method="POST">
+    <div>
+      <input type="text" name="swamy_name" placeholder="Peetam Name / Swamy Name" required>
+    </div>
 
     <div class="date-time-row">
       <label for="from_date">From Date:</label>
@@ -143,26 +151,62 @@ button.submit-btn:hover {
       <input type="time" id="biksha_time" name="biksha_time" required>
     </div>
 
-    <input type="tel" name="phone_number" placeholder="Phone Number" required>
-    <input type="text" name="location" placeholder="Location" required>
-    <input type="text" name="near_landmark" placeholder="Near Landmark">
-    <input type="text" name="pincode" placeholder="Pincode">
+    <div>
+      <input type="tel" name="phone_number" placeholder="Phone Number" required>
+    </div>
+
+    <div>
+      <input type="text" name="location" placeholder="Location" required>
+    </div>
+
+    <div>
+      <input type="text" name="near_landmark" placeholder="Near Landmark" required>
+    </div>
+
+    <div>
+      <input type="text" name="pincode" placeholder="Pincode" required>
+    </div>
 
     <button type="submit" class="submit-btn">Add Alpaharam</button>
   </form>
 </div>
 
 <script>
-// Set default date and time
-const today = new Date();
-document.getElementById('from_date').valueAsDate = today;
-document.getElementById('to_date').valueAsDate = today;
-document.getElementById('biksha_time').value = today.toTimeString().slice(0,5);
+// Get date inputs
+const fromDateInput = document.getElementById('from_date');
+const toDateInput = document.getElementById('to_date');
+
+// From Date min is today when user focuses
+fromDateInput.addEventListener('focus', () => {
+  const today = new Date().toISOString().split('T')[0];
+  fromDateInput.min = today;
+});
+
+// To Date min updates dynamically based on From Date
+fromDateInput.addEventListener('change', () => {
+  if (fromDateInput.value) {
+    toDateInput.min = fromDateInput.value;
+    if (toDateInput.value && toDateInput.value < fromDateInput.value) {
+      toDateInput.value = '';
+    }
+  } else {
+    toDateInput.min = '';
+  }
+});
+
+// To Date min also ensures validation if user focuses before From Date
+toDateInput.addEventListener('focus', () => {
+  if (fromDateInput.value) {
+    toDateInput.min = fromDateInput.value;
+  } else {
+    const today = new Date().toISOString().split('T')[0];
+    toDateInput.min = today;
+  }
+});
 
 // Long press detection for switching to light mode
 let pressTimer;
 const card = document.getElementById('addAlpaharamCard');
-
 card.addEventListener('mousedown', startPress);
 card.addEventListener('touchstart', startPress);
 card.addEventListener('mouseup', cancelPress);
@@ -171,10 +215,10 @@ card.addEventListener('touchend', cancelPress);
 card.addEventListener('touchcancel', cancelPress);
 
 function startPress(e) {
-  if (e.type === 'mousedown' && e.button !== 0) return; // left click only
+  if (e.type === 'mousedown' && e.button !== 0) return;
   pressTimer = setTimeout(() => {
-    window.location.href = '{{ url_for("add_alpaharaml") }}'; // Light mode version
-  }, 1000); // 1 second
+    window.location.href = '{{ url_for("add_alpaharaml") }}';
+  }, 1000);
 }
 
 function cancelPress() {

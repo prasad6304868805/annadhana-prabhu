@@ -140,7 +140,7 @@ button.submit-btn:hover {
   <button class="back-btn" onclick="window.location.href='{{ url_for('poojal') }}'">⬅ Back</button>
 
   <h2>Register Pooja</h2>
-  <form action="{{ url_for('add_poojal') }}" method="POST">
+  <form id="poojaForm" action="{{ url_for('add_poojal') }}" method="POST">
     <input type="text" name="head_name" placeholder="Peetam Name / Swamy Name" required>
 
     <div class="date-time-row">
@@ -153,7 +153,6 @@ button.submit-btn:hover {
       <input type="time" name="pooja_time" id="pooja_time" required>
     </div>
 
-    <!-- New poojatype select field -->
     <select name="poojatype" required>
       <option value="" disabled selected>Select Pooja Type</option>
       <option value="Padi Pooja">Padi Pooja</option>
@@ -162,21 +161,15 @@ button.submit-btn:hover {
 
     <input type="tel" name="phone_number" placeholder="Phone Number" required>
     <input type="text" name="location" placeholder="Location" required>
-    <input type="text" name="near_landmark" placeholder="Near Landmark">
-    <input type="text" name="pincode" placeholder="Pincode">
+    <input type="text" name="near_landmark" placeholder="Near Landmark" required>
+    <input type="text" name="pincode" placeholder="Pincode" required>
+
     <button type="submit" class="submit-btn">Submit</button>
   </form>
 </div>
 
 <script>
-// Auto-fill current date and time
-const dateInput = document.getElementById('pooja_date');
-const timeInput = document.getElementById('pooja_time');
-const now = new Date();
-dateInput.valueAsDate = now;
-timeInput.value = now.toTimeString().slice(0,5);
-
-// Long press to switch to Dark Mode Add Pooja
+// Long press to switch to Dark Mode
 let pressTimer;
 const card = document.querySelector('.card');
 card.addEventListener('mousedown', startPress);
@@ -196,6 +189,23 @@ function startPress(e) {
 function cancelPress() {
   clearTimeout(pressTimer);
 }
+
+// ----- Date validation -----
+const poojaDateInput = document.getElementById('pooja_date');
+const today = new Date().toISOString().split('T')[0];
+
+// Initially blank
+poojaDateInput.value = '';
+poojaDateInput.min = today;
+
+const poojaForm = document.getElementById('poojaForm');
+poojaForm.addEventListener('submit', function(e) {
+  if (poojaDateInput.value < today) {
+    alert("Date cannot be in the past!");
+    e.preventDefault();
+    poojaDateInput.focus();
+  }
+});
 </script>
 
 </body>
