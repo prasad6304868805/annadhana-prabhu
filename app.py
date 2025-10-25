@@ -8,7 +8,8 @@ app = Flask(__name__)
 # ------------------------
 # Database configuration
 # ------------------------
-app.config['SQLALCHEMY_DATABASE_URI'] = "postgresql://root:kVeQLihcFCQ01s876TZRS2uHQUGrSxGr@dpg-d3sijungi27c73dlpvfg-a.oregon-postgres.render.com/devotional"
+
+app.config['SQLALCHEMY_DATABASE_URI'] = "postgresql+psycopg://root:kVeQLihcFCQ01s876TZRS2uHQUGrSxGr@dpg-d3sijungi27c73dlpvfg-a.oregon-postgres.render.com/devotional"
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
