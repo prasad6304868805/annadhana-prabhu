@@ -5,6 +5,21 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Pooja List</title>
 <style>
+/* --- Dark Mode Variables --- */
+:root {
+  --bg-color: #121212;
+  --card-bg: #1e1e1e;
+  --text-color: #ffffff;
+  --primary-color: #ff5722;
+  --secondary-color: #ff7043;
+  --btn-bg: #ff5722;
+  --btn-hover-bg: #ff7043;
+  --input-bg: #2c2c2c;
+  --input-text: #fff;
+  --border-color: #333;
+  --no-data-color: #ff6f61;
+}
+
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
 body {
@@ -12,23 +27,24 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  background: #f0e7db;
+  background: var(--bg-color);
   height: 100vh;
   width: 100%;
+  color: var(--text-color);
 }
 
 .app-card {
   width: 100%;
   max-width: 400px;
   height: 711px; /* 9:16 ratio */
-  background: #fff3e0;
+  background: var(--card-bg);
   display: flex;
   flex-direction: column;
   padding: 15px;
   position: relative;
   overflow: hidden;
   border-radius: 25px;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.7);
 }
 
 .back-btn {
@@ -38,8 +54,8 @@ body {
   padding: 8px 14px;
   border: none;
   border-radius: 12px;
-  background: linear-gradient(45deg,#ff7043,#ff9800);
-  color: #fff;
+  background: var(--btn-bg);
+  color: var(--text-color);
   cursor: pointer;
   font-size: 14px;
   transition: all 0.3s ease;
@@ -47,7 +63,7 @@ body {
 }
 .back-btn:hover {
   transform: scale(1.05);
-  background: linear-gradient(45deg,#ff8f00,#ffc107);
+  background: var(--btn-hover-bg);
 }
 
 .search-box {
@@ -59,7 +75,9 @@ body {
 .search-box input {
   padding: 6px 10px;
   border-radius: 12px;
-  border: 1px solid #ccc;
+  border: 1px solid var(--border-color);
+  background: var(--input-bg);
+  color: var(--input-text);
   font-size: 13px;
   width: 120px;
 }
@@ -76,16 +94,16 @@ body {
 
 .card {
   width: 95%;
-  background: linear-gradient(135deg,#fff8dc,#ffe0b2);
+  background: #2a2a2a;
   border-radius: 20px;
   padding: 15px 10px;
-  box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+  box-shadow: 0 6px 15px rgba(0,0,0,0.6);
   margin: 8px auto;
   text-align: center;
 }
 
 .card h3 {
-  color: #ff7043;
+  color: var(--primary-color);
   font-size: 16px;
   font-weight: 700;
   text-align: center;
@@ -99,19 +117,19 @@ body {
 }
 .card td {
   padding: 6px 8px;
-  border-bottom: 1px solid rgba(0,0,0,0.1);
-  color: #5d4037;
+  border-bottom: 1px solid var(--border-color);
+  color: var(--text-color);
   text-align: left;
 }
 .card td:first-child {
   font-weight: 700;
-  color: #ff7043;
+  color: var(--secondary-color);
   width: 40%;
 }
 
 .no-data {
   margin-top: 30px;
-  color: #a52a2a;
+  color: var(--no-data-color);
   font-size: 14px;
   text-align: center;
 }
@@ -128,15 +146,15 @@ body {
   padding: 10px 0;
   border: none;
   border-radius: 12px;
-  background: linear-gradient(45deg,#ff7043,#ff9800);
-  color: #fff;
+  background: var(--btn-bg);
+  color: var(--text-color);
   font-size: 14px;
   cursor: pointer;
   transition: all 0.3s ease;
 }
 .bottom-btns button:hover {
   transform: scale(1.05);
-  background: linear-gradient(45deg,#ff8f00,#ffc107);
+  background: var(--btn-hover-bg);
 }
 
 @media screen and (max-width: 360px) {

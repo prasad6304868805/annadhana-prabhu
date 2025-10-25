@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Biksha List</title>
 <style>
-/* --- Same CSS as before --- */
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
 body {
@@ -13,23 +12,24 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  background: #f0e7db;
+  background: #121212; /* Dark background */
   height: 100vh;
   width: 100%;
+  color: #ffe0b2;
 }
 
 .app-card {
   width: 100%;
   max-width: 400px;
   height: 711px;
-  background: #fff3e0;
+  background: #1e1e1e; /* Dark card background */
   display: flex;
   flex-direction: column;
   padding: 15px;
   position: relative;
   overflow: hidden;
   border-radius: 25px;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.7);
 }
 
 .back-btn {
@@ -59,7 +59,9 @@ body {
 .search-box input {
   padding: 6px 10px;
   border-radius: 12px;
-  border: 1px solid #ccc;
+  border: 1px solid #555;
+  background: #2c2c2c;
+  color: #ffe0b2;
   font-size: 13px;
   width: 120px;
 }
@@ -76,16 +78,16 @@ body {
 
 .card {
   width: 95%;
-  background: linear-gradient(135deg,#fff8dc,#ffe0b2);
+  background: #2c2c2c; /* Dark card background */
   border-radius: 20px;
   padding: 15px 10px;
-  box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+  box-shadow: 0 6px 15px rgba(0,0,0,0.6);
   margin: 8px auto;
   text-align: left;
 }
 
 .card h3 {
-  color: #ff7043;
+  color: #ffcc80;
   font-size: 16px;
   font-weight: 700;
   margin-bottom: 10px;
@@ -99,19 +101,19 @@ body {
 }
 .card td {
   padding: 4px 6px;
-  border-bottom: 1px solid rgba(0,0,0,0.05);
-  color: #5d4037;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+  color: #ffe0b2;
   text-align: left;
 }
 .card td:first-child {
   font-weight: 700;
-  color: #ff7043;
+  color: #ffcc80;
   width: 40%;
 }
 
 .no-data {
   margin-top: 30px;
-  color: #a52a2a;
+  color: #ff7043;
   font-size: 14px;
   text-align: center;
 }

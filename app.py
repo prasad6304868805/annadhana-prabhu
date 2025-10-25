@@ -92,16 +92,23 @@ def add_pooja():
 @app.route('/biksha')
 def biksha():
     bikshas = Biksha.query.all()
-    # Format dates
+
     for b in bikshas:
+        # Format From Date
         try:
-            b.from_date_str = datetime.strptime(b.from_date, "%Y-%m-%d").strftime("%d|%m|%Y")
+            b.from_date_str = datetime.strptime(b.from_date, "%Y-%m-%d").strftime("%d-%m-%Y")
         except:
             b.from_date_str = b.from_date
-        try:
-            b.to_date_str = datetime.strptime(b.to_date, "%Y-%m-%d").strftime("%d|%m|%Y") if b.to_date else ""
-        except:
-            b.to_date_str = b.to_date or ""
+
+        # Format To Date
+        if b.to_date:  # only if to_date exists
+            try:
+                b.to_date_str = datetime.strptime(b.to_date, "%Y-%m-%d").strftime("%d-%m-%Y")
+            except:
+                b.to_date_str = b.to_date
+        else:
+            b.to_date_str = ""  # empty string if no to_date
+
     return render_template('biksha.html', bikshas=bikshas)
 
 @app.route('/add_biksha', methods=['GET', 'POST'])

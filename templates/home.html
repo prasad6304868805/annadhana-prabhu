@@ -5,17 +5,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Devotional App</title>
 <style>
-/* CSS variables for light/dark mode */
+/* Dark mode variables */
 :root {
-  --bg-color: #f0e7db;
-  --title-color: #fff;
-  --button-bg: rgba(255,255,255,0.5);
-  --button-color: #ff5722;
-  --button-hover-bg: rgba(255,255,255,0.75);
+  --bg-color: #121212;           /* Dark background */
+  --title-color: #ffe0b2;        /* Light golden text */
+  --button-bg: rgba(255,255,255,0.1);
+  --button-color: #ffcc80;
+  --button-hover-bg: rgba(255,255,255,0.2);
   --button-hover-color: #fff;
+  --shadow-color: rgba(0,0,0,0.5);
 }
-
-
 
 html, body {
   width: 100%;
@@ -25,6 +24,7 @@ html, body {
   justify-content: center;
   align-items: center;
   background: var(--bg-color);
+  margin: 0;
 }
 
 /* 9:16 container */
@@ -41,11 +41,9 @@ html, body {
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+  box-shadow: 0 20px 40px var(--shadow-color);
   padding: 30px 0 50px 0;
 }
-
-
 
 /* Title block */
 .title-block {
@@ -57,7 +55,7 @@ html, body {
   color: var(--title-color);
   font-size: 32px;
   font-weight: 700;
-  text-shadow: 2px 2px 8px rgba(0,0,0,0.5);
+  text-shadow: 2px 2px 8px var(--shadow-color);
   line-height: 1.2;
 }
 
@@ -82,7 +80,7 @@ html, body {
   font-size: 18px;
   font-weight: 600;
   cursor: pointer;
-  box-shadow: 0 6px 18px rgba(0,0,0,0.2);
+  box-shadow: 0 6px 18px var(--shadow-color);
   transition: all 0.3s ease;
   backdrop-filter: blur(8px);
 }
@@ -91,7 +89,7 @@ html, body {
   background: var(--button-hover-bg);
   color: var(--button-hover-color);
   transform: scale(1.05);
-  box-shadow: 0 8px 22px rgba(0,0,0,0.3);
+  box-shadow: 0 8px 22px var(--shadow-color);
 }
 
 /* Small screen adjustments */
@@ -116,10 +114,6 @@ html, body {
     <button class="button" onclick="location.href='{{ url_for('alpaharam') }}'">Alpaharam</button>
   </div>
 </div>
-
-<script>
-
-</script>
 
 </body>
 </html>
