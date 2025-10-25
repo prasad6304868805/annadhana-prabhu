@@ -80,7 +80,7 @@ form {
   padding: 0 10px;
 }
 
-input {
+input, select {
   padding: 12px;
   border: 1px solid var(--input-border);
   border-radius: 12px;
@@ -152,6 +152,13 @@ button.submit-btn:hover {
       <label for="pooja_time">Pooja Starting Time</label>
       <input type="time" name="pooja_time" id="pooja_time" required>
     </div>
+
+    <!-- New poojatype select field -->
+    <select name="poojatype" required>
+      <option value="" disabled selected>Select Pooja Type</option>
+      <option value="Padi Pooja">Padi Pooja</option>
+      <option value="Ambalam Pooja">Ambalam Pooja</option>
+    </select>
 
     <input type="tel" name="phone_number" placeholder="Phone Number" required>
     <input type="text" name="location" placeholder="Location" required>

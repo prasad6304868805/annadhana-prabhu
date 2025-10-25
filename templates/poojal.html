@@ -174,23 +174,24 @@ body {
   </div>
 
   <div class="card-container" id="cardContainer">
-    {% if poojas %}
-      {% for p in poojas %}
-        <div class="card">
-          <h3>{{ p.head_name }}</h3>
-          <table>
-            <tr><td>Date</td><td>{{ p.pooja_date }}</td></tr>
-            <tr><td>Time</td><td>{{ p.pooja_time }}</td></tr>
-            <tr><td>Location</td><td>{{ p.location }}</td></tr>
-            <tr><td>Landmark</td><td>{{ p.near_landmark }}</td></tr>
-            <tr><td>Pincode</td><td>{{ p.pincode }}</td></tr>
-          </table>
-        </div>
-      {% endfor %}
-    {% else %}
-      <div class="no-data">No Pooja entries found</div>
-    {% endif %}
-  </div>
+  {% if poojas %}
+    {% for p in poojas %}
+      <div class="card">
+        <h3>{{ p.head_name }}</h3>
+        <table>
+          <tr><td>Date</td><td>{{ p.pooja_date }}</td></tr>
+          <tr><td>Time</td><td>{{ p.pooja_time }}</td></tr>
+          <tr><td>Type</td><td>{{ p.pooja_type }}</td></tr> <!-- New column -->
+          <tr><td>Location</td><td>{{ p.location }}</td></tr>
+          <tr><td>Landmark</td><td>{{ p.near_landmark }}</td></tr>
+          <tr><td>Pincode</td><td>{{ p.pincode }}</td></tr>
+        </table>
+      </div>
+    {% endfor %}
+  {% else %}
+    <div class="no-data">No Pooja entries found</div>
+  {% endif %}
+</div>
 
   <div class="bottom-btns">
     <button onclick="window.location.href='{{ url_for('homel') }}'">Home</button>

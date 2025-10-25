@@ -22,6 +22,7 @@ class Pooja(db.Model):
     head_name = db.Column(db.String(100), nullable=False)
     pooja_date = db.Column(db.String(20), nullable=False)
     pooja_time = db.Column(db.String(20), nullable=False)
+    pooja_type = db.Column(db.String(50), nullable=True)
     phone_number = db.Column(db.String(20), nullable=False)
     location = db.Column(db.String(200), nullable=False)
     near_landmark = db.Column(db.String(100), nullable=True)
@@ -52,15 +53,15 @@ class Alpaharam(db.Model):
     pincode = db.Column(db.String(10), nullable=True)
 
 # ------------------------
-# Helper function to format dates
+# Helper function to format dates as "25 October 2025"
 # ------------------------
-def format_date(date_value):
+def format_date_long(date_value):
     if not date_value:
         return ""
-    if isinstance(date_value, datetime):
-        return date_value.strftime("%d-%m-%Y")
     try:
-        return datetime.strptime(str(date_value), "%Y-%m-%d").strftime("%d-%m-%Y")
+        if isinstance(date_value, datetime):
+            return date_value.strftime("%d %B %Y")
+        return datetime.strptime(str(date_value), "%Y-%m-%d").strftime("%d %B %Y")
     except Exception:
         return str(date_value)
 
@@ -75,7 +76,7 @@ def homel():
 def poojal():
     poojas = Pooja.query.all()
     for p in poojas:
-        p.pooja_date = format_date(p.pooja_date)
+        p.pooja_date = format_date_long(p.pooja_date)
     return render_template('poojal.html', poojas=poojas, switch_url=url_for('pooja'))
 
 @app.route('/add_poojal', methods=['GET', 'POST'])
@@ -85,6 +86,7 @@ def add_poojal():
             head_name=request.form['head_name'],
             pooja_date=request.form['pooja_date'],
             pooja_time=request.form['pooja_time'],
+            pooja_type=request.form.get('poojatype'),
             phone_number=request.form['phone_number'],
             location=request.form['location'],
             near_landmark=request.form.get('near_landmark'),
@@ -99,8 +101,8 @@ def add_poojal():
 def bikshal():
     bikshas = Biksha.query.all()
     for b in bikshas:
-        b.from_date_str = format_date(b.from_date)
-        b.to_date_str = format_date(b.to_date)
+        b.from_date_str = format_date_long(b.from_date)
+        b.to_date_str = format_date_long(b.to_date)
     return render_template('bikshal.html', bikshas=bikshas, switch_url=url_for('biksha'))
 
 @app.route('/add_bikshal', methods=['GET', 'POST'])
@@ -127,8 +129,8 @@ def add_bikshal():
 def alpaharaml():
     alpaharams = Alpaharam.query.all()
     for a in alpaharams:
-        a.from_date_str = format_date(a.from_date)
-        a.to_date_str = format_date(a.to_date)
+        a.from_date_str = format_date_long(a.from_date)
+        a.to_date_str = format_date_long(a.to_date)
     return render_template('alpaharaml.html', alpaharams=alpaharams, switch_url=url_for('alpaharam'))
 
 @app.route('/add_alpaharaml', methods=['GET', 'POST'])
@@ -162,7 +164,7 @@ def home():
 def pooja():
     poojas = Pooja.query.all()
     for p in poojas:
-        p.pooja_date = format_date(p.pooja_date)
+        p.pooja_date = format_date_long(p.pooja_date)
     return render_template('pooja.html', poojas=poojas, switch_url=url_for('poojal'))
 
 @app.route('/add_pooja', methods=['GET', 'POST'])
@@ -172,6 +174,7 @@ def add_pooja():
             head_name=request.form['head_name'],
             pooja_date=request.form['pooja_date'],
             pooja_time=request.form['pooja_time'],
+            pooja_type=request.form.get('poojatype'),
             phone_number=request.form['phone_number'],
             location=request.form['location'],
             near_landmark=request.form.get('near_landmark'),
@@ -186,8 +189,8 @@ def add_pooja():
 def biksha():
     bikshas = Biksha.query.all()
     for b in bikshas:
-        b.from_date_str = format_date(b.from_date)
-        b.to_date_str = format_date(b.to_date)
+        b.from_date_str = format_date_long(b.from_date)
+        b.to_date_str = format_date_long(b.to_date)
     return render_template('biksha.html', bikshas=bikshas, switch_url=url_for('bikshal'))
 
 @app.route('/add_biksha', methods=['GET', 'POST'])
@@ -208,14 +211,14 @@ def add_biksha():
         db.session.add(new_biksha)
         db.session.commit()
         return redirect(url_for('biksha'))
-    return render_template('add_biksha.html', switch_url=url_for('add_bikshal'))
+    return render_template('add_biksha.html', switch_url=url_for('bikshal'))
 
 @app.route('/alpaharam')
 def alpaharam():
     alpaharams = Alpaharam.query.all()
     for a in alpaharams:
-        a.from_date_str = format_date(a.from_date)
-        a.to_date_str = format_date(a.to_date)
+        a.from_date_str = format_date_long(a.from_date)
+        a.to_date_str = format_date_long(a.to_date)
     return render_template('alpaharam.html', alpaharams=alpaharams, switch_url=url_for('alpaharaml'))
 
 @app.route('/add_alpaharam', methods=['GET', 'POST'])
@@ -236,7 +239,7 @@ def add_alpaharam():
         db.session.add(new_alpaharam)
         db.session.commit()
         return redirect(url_for('alpaharam'))
-    return render_template('add_alpaharam.html', switch_url=url_for('add_alpaharaml'))
+    return render_template('add_alpaharam.html', switch_url=url_for('alpaharaml'))
 
 # ------------------------
 # Run app
