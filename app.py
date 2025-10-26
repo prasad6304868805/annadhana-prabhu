@@ -1,14 +1,14 @@
 import os
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, flash
 from flask_sqlalchemy import SQLAlchemy
-from datetime import datetime
+from datetime import datetime, date
 
 app = Flask(__name__)
+app.secret_key = "ayyappa_secret"
 
 # ------------------------
 # Database configuration
 # ------------------------
-
 app.config['SQLALCHEMY_DATABASE_URI'] = "postgresql+psycopg://root:kVeQLihcFCQ01s876TZRS2uHQUGrSxGr@dpg-d3sijungi27c73dlpvfg-a.oregon-postgres.render.com/devotional"
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
@@ -29,38 +29,42 @@ class Pooja(db.Model):
     near_landmark = db.Column(db.String(100), nullable=True)
     pincode = db.Column(db.String(10), nullable=True)
 
+
 class Biksha(db.Model):
     __tablename__ = 'biksha'
     id = db.Column(db.Integer, primary_key=True)
     swamy_name = db.Column(db.String(100), nullable=False)
-    from_date = db.Column(db.String(20), nullable=False)
-    to_date = db.Column(db.String(20), nullable=False)
+    from_date = db.Column(db.Date, nullable=False)
+    to_date = db.Column(db.Date, nullable=False)
     biksha_time = db.Column(db.String(20), nullable=False)
     phone_number = db.Column(db.String(20), nullable=False)
     location = db.Column(db.String(200), nullable=False)
     near_landmark = db.Column(db.String(100), nullable=True)
     pincode = db.Column(db.String(10), nullable=True)
+
 
 class Alpaharam(db.Model):
     __tablename__ = 'alpaharam'
     id = db.Column(db.Integer, primary_key=True)
     swamy_name = db.Column(db.String(100), nullable=False)
-    from_date = db.Column(db.String(20), nullable=False)
-    to_date = db.Column(db.String(20), nullable=False)
+    from_date = db.Column(db.Date, nullable=False)
+    to_date = db.Column(db.Date, nullable=False)
     biksha_time = db.Column(db.String(20), nullable=False)
     phone_number = db.Column(db.String(20), nullable=False)
     location = db.Column(db.String(200), nullable=False)
     near_landmark = db.Column(db.String(100), nullable=True)
     pincode = db.Column(db.String(10), nullable=True)
 
+
 # ------------------------
-# Helper function to format dates as "25 October 2025"
+# Helper function
 # ------------------------
 def format_date_long(date_value):
+    """Format date to '25 October 2025'."""
     if not date_value:
         return ""
     try:
-        if isinstance(date_value, datetime):
+        if isinstance(date_value, (datetime, date)):
             return date_value.strftime("%d %B %Y")
         return datetime.strptime(str(date_value), "%Y-%m-%d").strftime("%d %B %Y")
     except Exception:
@@ -109,8 +113,15 @@ def bikshal():
 @app.route('/add_bikshal', methods=['GET', 'POST'])
 def add_bikshal():
     if request.method == 'POST':
-        from_date = request.form['from_date']
-        to_date = request.form.get('to_date') or from_date
+        from_date = datetime.strptime(request.form['from_date'], "%Y-%m-%d").date()
+        to_date_str = request.form.get('to_date') or request.form['from_date']
+        to_date = datetime.strptime(to_date_str, "%Y-%m-%d").date()
+
+        # Validation: to_date should not be before from_date
+        if to_date < from_date:
+            flash("To Date cannot be earlier than From Date.")
+            return redirect(url_for('add_bikshal'))
+
         new_biksha = Biksha(
             swamy_name=request.form['swamy_name'],
             from_date=from_date,
@@ -137,8 +148,14 @@ def alpaharaml():
 @app.route('/add_alpaharaml', methods=['GET', 'POST'])
 def add_alpaharaml():
     if request.method == 'POST':
-        from_date = request.form['from_date']
-        to_date = request.form.get('to_date') or from_date
+        from_date = datetime.strptime(request.form['from_date'], "%Y-%m-%d").date()
+        to_date_str = request.form.get('to_date') or request.form['from_date']
+        to_date = datetime.strptime(to_date_str, "%Y-%m-%d").date()
+
+        if to_date < from_date:
+            flash("To Date cannot be earlier than From Date.")
+            return redirect(url_for('add_alpaharaml'))
+
         new_alpaharam = Alpaharam(
             swamy_name=request.form['swamy_name'],
             from_date=from_date,
@@ -197,8 +214,14 @@ def biksha():
 @app.route('/add_biksha', methods=['GET', 'POST'])
 def add_biksha():
     if request.method == 'POST':
-        from_date = request.form['from_date']
-        to_date = request.form.get('to_date') or from_date
+        from_date = datetime.strptime(request.form['from_date'], "%Y-%m-%d").date()
+        to_date_str = request.form.get('to_date') or request.form['from_date']
+        to_date = datetime.strptime(to_date_str, "%Y-%m-%d").date()
+
+        if to_date < from_date:
+            flash("To Date cannot be earlier than From Date.")
+            return redirect(url_for('add_biksha'))
+
         new_biksha = Biksha(
             swamy_name=request.form['swamy_name'],
             from_date=from_date,
@@ -225,8 +248,14 @@ def alpaharam():
 @app.route('/add_alpaharam', methods=['GET', 'POST'])
 def add_alpaharam():
     if request.method == 'POST':
-        from_date = request.form['from_date']
-        to_date = request.form.get('to_date') or from_date
+        from_date = datetime.strptime(request.form['from_date'], "%Y-%m-%d").date()
+        to_date_str = request.form.get('to_date') or request.form['from_date']
+        to_date = datetime.strptime(to_date_str, "%Y-%m-%d").date()
+
+        if to_date < from_date:
+            flash("To Date cannot be earlier than From Date.")
+            return redirect(url_for('add_alpaharam'))
+
         new_alpaharam = Alpaharam(
             swamy_name=request.form['swamy_name'],
             from_date=from_date,
