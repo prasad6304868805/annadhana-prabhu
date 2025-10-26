@@ -1,7 +1,7 @@
 import os
 from flask import Flask, render_template, request, redirect, url_for, flash
 from flask_sqlalchemy import SQLAlchemy
-from datetime import datetime, date
+from datetime import datetime, date, time
 
 app = Flask(__name__)
 app.secret_key = "ayyappa_secret"
@@ -9,7 +9,7 @@ app.secret_key = "ayyappa_secret"
 # ------------------------
 # Database configuration
 # ------------------------
-app.config['SQLALCHEMY_DATABASE_URI'] = "postgresql+psycopg://root:kVeQLihcFCQ01s876TZRS2uHQUGrSxGr@dpg-d3sijungi27c73dlpvfg-a.oregon-postgres.render.com/devotional"
+app.config['SQLALCHEMY_DATABASE_URI'] = "postgresql+psycopg2://root:kVeQLihcFCQ01s876TZRS2uHQUGrSxGr@dpg-d3sijungi27c73dlpvfg-a.oregon-postgres.render.com/devotional"
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
@@ -36,7 +36,7 @@ class Biksha(db.Model):
     swamy_name = db.Column(db.String(100), nullable=False)
     from_date = db.Column(db.Date, nullable=False)
     to_date = db.Column(db.Date, nullable=False)
-    biksha_time = db.Column(db.String(20), nullable=False)
+    biksha_time = db.Column(db.Time, nullable=False)  # ✅ Corrected to TIME
     phone_number = db.Column(db.String(20), nullable=False)
     location = db.Column(db.String(200), nullable=False)
     near_landmark = db.Column(db.String(100), nullable=True)
@@ -49,7 +49,7 @@ class Alpaharam(db.Model):
     swamy_name = db.Column(db.String(100), nullable=False)
     from_date = db.Column(db.Date, nullable=False)
     to_date = db.Column(db.Date, nullable=False)
-    biksha_time = db.Column(db.String(20), nullable=False)
+    biksha_time = db.Column(db.Time, nullable=False)  # ✅ Corrected to TIME
     phone_number = db.Column(db.String(20), nullable=False)
     location = db.Column(db.String(200), nullable=False)
     near_landmark = db.Column(db.String(100), nullable=True)
@@ -69,6 +69,7 @@ def format_date_long(date_value):
         return datetime.strptime(str(date_value), "%Y-%m-%d").strftime("%d %B %Y")
     except Exception:
         return str(date_value)
+
 
 # ------------------------
 # Light Mode Routes
@@ -116,8 +117,8 @@ def add_bikshal():
         from_date = datetime.strptime(request.form['from_date'], "%Y-%m-%d").date()
         to_date_str = request.form.get('to_date') or request.form['from_date']
         to_date = datetime.strptime(to_date_str, "%Y-%m-%d").date()
+        biksha_time = datetime.strptime(request.form['biksha_time'], "%H:%M").time()  # ✅ convert to TIME
 
-        # Validation: to_date should not be before from_date
         if to_date < from_date:
             flash("To Date cannot be earlier than From Date.")
             return redirect(url_for('add_bikshal'))
@@ -126,7 +127,7 @@ def add_bikshal():
             swamy_name=request.form['swamy_name'],
             from_date=from_date,
             to_date=to_date,
-            biksha_time=request.form['biksha_time'],
+            biksha_time=biksha_time,  # ✅ TIME object
             phone_number=request.form['phone_number'],
             location=request.form['location'],
             near_landmark=request.form.get('near_landmark'),
@@ -151,6 +152,7 @@ def add_alpaharaml():
         from_date = datetime.strptime(request.form['from_date'], "%Y-%m-%d").date()
         to_date_str = request.form.get('to_date') or request.form['from_date']
         to_date = datetime.strptime(to_date_str, "%Y-%m-%d").date()
+        biksha_time = datetime.strptime(request.form['biksha_time'], "%H:%M").time()  # ✅ convert to TIME
 
         if to_date < from_date:
             flash("To Date cannot be earlier than From Date.")
@@ -160,7 +162,7 @@ def add_alpaharaml():
             swamy_name=request.form['swamy_name'],
             from_date=from_date,
             to_date=to_date,
-            biksha_time=request.form['biksha_time'],
+            biksha_time=biksha_time,  # ✅ TIME object
             phone_number=request.form['phone_number'],
             location=request.form['location'],
             near_landmark=request.form.get('near_landmark'),
@@ -170,6 +172,7 @@ def add_alpaharaml():
         db.session.commit()
         return redirect(url_for('alpaharaml'))
     return render_template('add_alpaharaml.html', switch_url=url_for('add_alpaharam'))
+
 
 # ------------------------
 # Dark Mode Routes
@@ -217,6 +220,7 @@ def add_biksha():
         from_date = datetime.strptime(request.form['from_date'], "%Y-%m-%d").date()
         to_date_str = request.form.get('to_date') or request.form['from_date']
         to_date = datetime.strptime(to_date_str, "%Y-%m-%d").date()
+        biksha_time = datetime.strptime(request.form['biksha_time'], "%H:%M").time()  # ✅ convert to TIME
 
         if to_date < from_date:
             flash("To Date cannot be earlier than From Date.")
@@ -226,7 +230,7 @@ def add_biksha():
             swamy_name=request.form['swamy_name'],
             from_date=from_date,
             to_date=to_date,
-            biksha_time=request.form['biksha_time'],
+            biksha_time=biksha_time,  # ✅ TIME object
             phone_number=request.form['phone_number'],
             location=request.form['location'],
             near_landmark=request.form.get('near_landmark'),
@@ -251,6 +255,7 @@ def add_alpaharam():
         from_date = datetime.strptime(request.form['from_date'], "%Y-%m-%d").date()
         to_date_str = request.form.get('to_date') or request.form['from_date']
         to_date = datetime.strptime(to_date_str, "%Y-%m-%d").date()
+        biksha_time = datetime.strptime(request.form['biksha_time'], "%H:%M").time()  # ✅ convert to TIME
 
         if to_date < from_date:
             flash("To Date cannot be earlier than From Date.")
@@ -260,7 +265,7 @@ def add_alpaharam():
             swamy_name=request.form['swamy_name'],
             from_date=from_date,
             to_date=to_date,
-            biksha_time=request.form['biksha_time'],
+            biksha_time=biksha_time,  # ✅ TIME object
             phone_number=request.form['phone_number'],
             location=request.form['location'],
             near_landmark=request.form.get('near_landmark'),
@@ -270,6 +275,7 @@ def add_alpaharam():
         db.session.commit()
         return redirect(url_for('alpaharam'))
     return render_template('add_alpaharam.html', switch_url=url_for('alpaharaml'))
+
 
 # ------------------------
 # Run app
