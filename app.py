@@ -9,7 +9,7 @@ app.secret_key = "ayyappa_secret"
 # ------------------------
 # Database configuration
 # ------------------------
-app.config['SQLALCHEMY_DATABASE_URI'] = "postgresql+psycopg2://root:kVeQLihcFCQ01s876TZRS2uHQUGrSxGr@dpg-d3sijungi27c73dlpvfg-a.oregon-postgres.render.com/devotional"
+app.config['SQLALCHEMY_DATABASE_URI'] = "postgresql+psycopg://root:kVeQLihcFCQ01s876TZRS2uHQUGrSxGr@dpg-d3sijungi27c73dlpvfg-a.oregon-postgres.render.com/devotional"
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
