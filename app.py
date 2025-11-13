@@ -80,7 +80,9 @@ def homel():
 
 @app.route('/poojal')
 def poojal():
-    poojas = Pooja.query.all()
+    today = date.today()
+    poojas = Pooja.query.filter(Pooja.pooja_date >= today).order_by(Pooja.pooja_date.desc()).all()
+    
     for p in poojas:
         p.pooja_date = format_date_long(p.pooja_date)
     return render_template('poojal.html', poojas=poojas, switch_url=url_for('pooja'))
@@ -105,7 +107,8 @@ def add_poojal():
 
 @app.route('/bikshal')
 def bikshal():
-    bikshas = Biksha.query.all()
+    today = date.today()  # Get current date    
+    bikshas = Biksha.query.filter(Biksha.to_date >= today).order_by(Biksha.from_date.desc()).all()
     for b in bikshas:
         b.from_date_str = format_date_long(b.from_date)
         b.to_date_str = format_date_long(b.to_date)
@@ -140,7 +143,8 @@ def add_bikshal():
 
 @app.route('/alpaharaml')
 def alpaharaml():
-    alpaharams = Alpaharam.query.all()
+    today = date.today()
+    alpaharams = Alpaharam.query.filter(Alpaharam.to_date >= today).order_by(Alpaharam.from_date.desc()).all()
     for a in alpaharams:
         a.from_date_str = format_date_long(a.from_date)
         a.to_date_str = format_date_long(a.to_date)
@@ -183,7 +187,8 @@ def home():
 
 @app.route('/pooja')
 def pooja():
-    poojas = Pooja.query.all()
+    today = date.today()
+    poojas = Pooja.query.filter(Pooja.pooja_date >= today).order_by(Pooja.pooja_date.desc()).all()
     for p in poojas:
         p.pooja_date = format_date_long(p.pooja_date)
     return render_template('pooja.html', poojas=poojas, switch_url=url_for('poojal'))
@@ -208,7 +213,9 @@ def add_pooja():
 
 @app.route('/biksha')
 def biksha():
-    bikshas = Biksha.query.all()
+    today = date.today()
+    bikshas = Biksha.query.filter(Biksha.to_date >= today).order_by(Biksha.from_date.desc()).all()
+
     for b in bikshas:
         b.from_date_str = format_date_long(b.from_date)
         b.to_date_str = format_date_long(b.to_date)
@@ -243,7 +250,8 @@ def add_biksha():
 
 @app.route('/alpaharam')
 def alpaharam():
-    alpaharams = Alpaharam.query.all()
+    today = date.today()
+    alpaharams = Alpaharam.query.filter(Alpaharam.to_date >= today).order_by(Alpaharam.from_date.desc()).all()
     for a in alpaharams:
         a.from_date_str = format_date_long(a.from_date)
         a.to_date_str = format_date_long(a.to_date)
