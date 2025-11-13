@@ -4,6 +4,10 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Devotional App - Dark Mode</title>
+
+<!-- ✅ Font Awesome for icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
 <style>
 :root {
   --bg-color: #121212;
@@ -39,7 +43,7 @@ html, body {
   justify-content: space-between;
   align-items: center;
   box-shadow: 0 20px 40px var(--shadow-color);
-  padding: 30px 0 50px 0;
+  padding: 30px 0 80px 0;
   user-select: none;
 }
 
@@ -85,8 +89,38 @@ html, body {
   box-shadow: 0 8px 22px var(--shadow-color);
 }
 
+/* 🔹 Floating WhatsApp & Call Buttons */
+.floating-buttons {
+  position: absolute;
+  bottom: 25px;
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+.floating-button {
+  width: 55px;
+  height: 55px;
+  border-radius: 50%;
+  border: none;
+  background: var(--btn-bg);
+  color: #fff;
+  font-size: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px var(--shadow-color);
+  transition: 0.3s;
+  cursor: pointer;
+}
+
+.floating-button:hover {
+  background: var(--btn-hover-bg);
+  transform: scale(1.1);
+}
+
 @media (max-width: 360px) {
-  .app-container { max-width: 100%; padding-bottom: 40px; }
+  .app-container { max-width: 100%; padding-bottom: 60px; }
   .button { width: 90%; font-size: 16px; }
   .title { font-size: 26px; }
 }
@@ -97,7 +131,7 @@ html, body {
 <div class="app-container">
 
   <div class="title-block">
-    <div class="title">Annadhana Prabhuva</div>
+    <div class="title">Annadhana Prabhu</div>
   </div>
 
   <div class="buttons">
@@ -105,6 +139,17 @@ html, body {
     <button class="button" onclick="location.href='{{ url_for('biksha') }}'">Biksha</button>
     <button class="button" onclick="location.href='{{ url_for('alpaharam') }}'">Alpaharam</button>
   </div>
+
+  <!-- 🔹 WhatsApp & Call Buttons -->
+  <div class="floating-buttons">
+    <button class="floating-button" onclick="window.location.href='tel:+919885096787'" title="Call">
+      <i class="fas fa-phone"></i>
+    </button>
+    <button class="floating-button" onclick="window.location.href='https://wa.me/919885096787?text=Hello%20Annadhana%20Prabhu%20Team!'" title="WhatsApp">
+      <i class="fab fa-whatsapp"></i>
+    </button>
+  </div>
+
 </div>
 
 <script>
