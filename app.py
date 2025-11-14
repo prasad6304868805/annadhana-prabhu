@@ -218,32 +218,33 @@ from datetime import datetime, date
 def pooja():
     today = date.today()
 
+    # Fetch all rows (no SQL compare)
     all_poojas = Pooja.query.all()
     valid_poojas = []
 
     for p in all_poojas:
         try:
-            # Convert stored string to date
-            pooja_date = datetime.strptime(p.pooja_date, "%Y-%m-%d").date()
+            # Convert VARCHAR pooja_date -> real date
+            pooja_date = datetime.strptime(p.pooja_date.strip(), "%Y-%m-%d").date()
 
-            # keep only today or future
+            # Keep only today or future poojas
             if pooja_date >= today:
                 valid_poojas.append(p)
 
-        except Exception:
-            continue  # skip bad date format
+        except:
+            continue  # skip invalid date formats
 
-    # Sort descending (newest first)
+    # Sort by newest date first
     valid_poojas.sort(
-        key=lambda x: datetime.strptime(x.pooja_date, "%Y-%m-%d").date(),
+        key=lambda x: datetime.strptime(x.pooja_date.strip(), "%Y-%m-%d").date(),
         reverse=True
     )
 
-    # Convert for display
+    # Convert date to long format for UI
     for p in valid_poojas:
         p.pooja_date = format_date_long(p.pooja_date)
 
-    return render_template("poojal.html", poojas=valid_poojas, switch_url=url_for("pooja"))
+    return render_template("pooja.html", poojas=valid_poojas, switch_url=url_for("pooja"))
 
 @app.route('/add_pooja', methods=['GET', 'POST'])
 def add_pooja():
