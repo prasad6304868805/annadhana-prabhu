@@ -78,14 +78,38 @@ def format_date_long(date_value):
 def homel():
     return render_template('homel.html', switch_url=url_for('home'))
 
+from datetime import datetime, date
+
 @app.route('/poojal')
 def poojal():
     today = date.today()
-    poojas = Pooja.query.filter(Pooja.pooja_date >= today).order_by(Pooja.pooja_date.desc()).all()
-    
-    for p in poojas:
+
+    all_poojas = Pooja.query.all()
+    valid_poojas = []
+
+    for p in all_poojas:
+        try:
+            # Convert stored string to date
+            pooja_date = datetime.strptime(p.pooja_date, "%Y-%m-%d").date()
+
+            # keep only today or future
+            if pooja_date >= today:
+                valid_poojas.append(p)
+
+        except Exception:
+            continue  # skip bad date format
+
+    # Sort descending (newest first)
+    valid_poojas.sort(
+        key=lambda x: datetime.strptime(x.pooja_date, "%Y-%m-%d").date(),
+        reverse=True
+    )
+
+    # Convert for display
+    for p in valid_poojas:
         p.pooja_date = format_date_long(p.pooja_date)
-    return render_template('poojal.html', poojas=poojas, switch_url=url_for('pooja'))
+
+    return render_template("poojal.html", poojas=valid_poojas, switch_url=url_for("pooja"))
 
 @app.route('/add_poojal', methods=['GET', 'POST'])
 def add_poojal():
@@ -185,13 +209,38 @@ def add_alpaharaml():
 def home():
     return render_template('home.html', switch_url=url_for('homel'))
 
+from datetime import datetime, date
+
 @app.route('/pooja')
 def pooja():
     today = date.today()
-    poojas = Pooja.query.filter(Pooja.pooja_date >= today).order_by(Pooja.pooja_date.desc()).all()
-    for p in poojas:
+
+    all_poojas = Pooja.query.all()
+    valid_poojas = []
+
+    for p in all_poojas:
+        try:
+            # Convert stored string to date
+            pooja_date = datetime.strptime(p.pooja_date, "%Y-%m-%d").date()
+
+            # keep only today or future
+            if pooja_date >= today:
+                valid_poojas.append(p)
+
+        except Exception:
+            continue  # skip bad date format
+
+    # Sort descending (newest first)
+    valid_poojas.sort(
+        key=lambda x: datetime.strptime(x.pooja_date, "%Y-%m-%d").date(),
+        reverse=True
+    )
+
+    # Convert for display
+    for p in valid_poojas:
         p.pooja_date = format_date_long(p.pooja_date)
-    return render_template('pooja.html', poojas=poojas, switch_url=url_for('poojal'))
+
+    return render_template("poojal.html", poojas=valid_poojas, switch_url=url_for("pooja"))
 
 @app.route('/add_pooja', methods=['GET', 'POST'])
 def add_pooja():
