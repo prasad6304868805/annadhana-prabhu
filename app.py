@@ -7,9 +7,9 @@ app = Flask(__name__)
 app.secret_key = "ayyappa_secret"
 
 # ------------------------
-# Database configuration
+# Database configuration (RENDER FIX – SSL MODE REQUIRED)
 # ------------------------
-app.config['SQLALCHEMY_DATABASE_URI'] = "postgresql+psycopg://root:kVeQLihcFCQ01s876TZRS2uHQUGrSxGr@dpg-d3sijungi27c73dlpvfg-a.oregon-postgres.render.com/devotional"
+app.config['SQLALCHEMY_DATABASE_URI'] = "postgresql+psycopg://root:kVeQLihcFCQ01s876TZRS2uHQUGrSxGr@dpg-d3sijungi27c73dlpvfg-a.oregon-postgres.render.com/devotional?sslmode=require"
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
@@ -36,7 +36,7 @@ class Biksha(db.Model):
     swamy_name = db.Column(db.String(100), nullable=False)
     from_date = db.Column(db.Date, nullable=False)
     to_date = db.Column(db.Date, nullable=False)
-    biksha_time = db.Column(db.Time, nullable=False)  # ✅ Corrected to TIME
+    biksha_time = db.Column(db.Time, nullable=False)
     phone_number = db.Column(db.String(20), nullable=False)
     location = db.Column(db.String(200), nullable=False)
     near_landmark = db.Column(db.String(100), nullable=True)
@@ -49,7 +49,7 @@ class Alpaharam(db.Model):
     swamy_name = db.Column(db.String(100), nullable=False)
     from_date = db.Column(db.Date, nullable=False)
     to_date = db.Column(db.Date, nullable=False)
-    biksha_time = db.Column(db.Time, nullable=False)  # ✅ Corrected to TIME
+    biksha_time = db.Column(db.Time, nullable=False)
     phone_number = db.Column(db.String(20), nullable=False)
     location = db.Column(db.String(200), nullable=False)
     near_landmark = db.Column(db.String(100), nullable=True)
@@ -78,41 +78,27 @@ def format_date_long(date_value):
 def homel():
     return render_template('homel.html', switch_url=url_for('home'))
 
-from datetime import datetime, date
-
-from datetime import datetime, date
 
 @app.route('/poojal')
 def poojal():
     today = date.today()
-
-    # Fetch all rows (no SQL compare)
     all_poojas = Pooja.query.all()
     valid_poojas = []
 
     for p in all_poojas:
         try:
-            # Convert VARCHAR pooja_date -> real date
             pooja_date = datetime.strptime(p.pooja_date.strip(), "%Y-%m-%d").date()
-
-            # Keep only today or future poojas
             if pooja_date >= today:
                 valid_poojas.append(p)
-
         except:
-            continue  # skip invalid date formats
+            continue
 
-    # Sort by newest date first
-    valid_poojas.sort(
-        key=lambda x: datetime.strptime(x.pooja_date.strip(), "%Y-%m-%d").date(),
-        reverse=True
-    )
-
-    # Convert date to long format for UI
+    valid_poojas.sort(key=lambda x: datetime.strptime(x.pooja_date.strip(), "%Y-%m-%d").date(), reverse=True)
     for p in valid_poojas:
         p.pooja_date = format_date_long(p.pooja_date)
 
     return render_template("poojal.html", poojas=valid_poojas, switch_url=url_for("pooja"))
+
 
 @app.route('/add_poojal', methods=['GET', 'POST'])
 def add_poojal():
@@ -132,22 +118,23 @@ def add_poojal():
         return redirect(url_for('poojal'))
     return render_template('add_poojal.html', switch_url=url_for('add_pooja'))
 
+
 @app.route('/bikshal')
 def bikshal():
-    today = date.today()  # Get current date    
+    today = date.today()
     bikshas = Biksha.query.filter(Biksha.to_date >= today).order_by(Biksha.from_date.desc()).all()
     for b in bikshas:
         b.from_date_str = format_date_long(b.from_date)
         b.to_date_str = format_date_long(b.to_date)
     return render_template('bikshal.html', bikshas=bikshas, switch_url=url_for('biksha'))
 
+
 @app.route('/add_bikshal', methods=['GET', 'POST'])
 def add_bikshal():
     if request.method == 'POST':
         from_date = datetime.strptime(request.form['from_date'], "%Y-%m-%d").date()
-        to_date_str = request.form.get('to_date') or request.form['from_date']
-        to_date = datetime.strptime(to_date_str, "%Y-%m-%d").date()
-        biksha_time = datetime.strptime(request.form['biksha_time'], "%H:%M").time()  # ✅ convert to TIME
+        to_date = datetime.strptime(request.form.get('to_date') or request.form['from_date'], "%Y-%m-%d").date()
+        biksha_time = datetime.strptime(request.form['biksha_time'], "%H:%M").time()
 
         if to_date < from_date:
             flash("To Date cannot be earlier than From Date.")
@@ -157,7 +144,7 @@ def add_bikshal():
             swamy_name=request.form['swamy_name'],
             from_date=from_date,
             to_date=to_date,
-            biksha_time=biksha_time,  # ✅ TIME object
+            biksha_time=biksha_time,
             phone_number=request.form['phone_number'],
             location=request.form['location'],
             near_landmark=request.form.get('near_landmark'),
@@ -168,6 +155,7 @@ def add_bikshal():
         return redirect(url_for('bikshal'))
     return render_template('add_bikshal.html', switch_url=url_for('add_biksha'))
 
+
 @app.route('/alpaharaml')
 def alpaharaml():
     today = date.today()
@@ -177,13 +165,13 @@ def alpaharaml():
         a.to_date_str = format_date_long(a.to_date)
     return render_template('alpaharaml.html', alpaharams=alpaharams, switch_url=url_for('alpaharam'))
 
+
 @app.route('/add_alpaharaml', methods=['GET', 'POST'])
 def add_alpaharaml():
     if request.method == 'POST':
         from_date = datetime.strptime(request.form['from_date'], "%Y-%m-%d").date()
-        to_date_str = request.form.get('to_date') or request.form['from_date']
-        to_date = datetime.strptime(to_date_str, "%Y-%m-%d").date()
-        biksha_time = datetime.strptime(request.form['biksha_time'], "%H:%M").time()  # ✅ convert to TIME
+        to_date = datetime.strptime(request.form.get('to_date') or request.form['from_date'], "%Y-%m-%d").date()
+        biksha_time = datetime.strptime(request.form['biksha_time'], "%H:%M").time()
 
         if to_date < from_date:
             flash("To Date cannot be earlier than From Date.")
@@ -193,7 +181,7 @@ def add_alpaharaml():
             swamy_name=request.form['swamy_name'],
             from_date=from_date,
             to_date=to_date,
-            biksha_time=biksha_time,  # ✅ TIME object
+            biksha_time=biksha_time,
             phone_number=request.form['phone_number'],
             location=request.form['location'],
             near_landmark=request.form.get('near_landmark'),
@@ -212,39 +200,27 @@ def add_alpaharaml():
 def home():
     return render_template('home.html', switch_url=url_for('homel'))
 
-from datetime import datetime, date
 
 @app.route('/pooja')
 def pooja():
     today = date.today()
-
-    # Fetch all rows (no SQL compare)
     all_poojas = Pooja.query.all()
     valid_poojas = []
 
     for p in all_poojas:
         try:
-            # Convert VARCHAR pooja_date -> real date
             pooja_date = datetime.strptime(p.pooja_date.strip(), "%Y-%m-%d").date()
-
-            # Keep only today or future poojas
             if pooja_date >= today:
                 valid_poojas.append(p)
-
         except:
-            continue  # skip invalid date formats
+            continue
 
-    # Sort by newest date first
-    valid_poojas.sort(
-        key=lambda x: datetime.strptime(x.pooja_date.strip(), "%Y-%m-%d").date(),
-        reverse=True
-    )
-
-    # Convert date to long format for UI
+    valid_poojas.sort(key=lambda x: datetime.strptime(x.pooja_date.strip(), "%Y-%m-%d").date(), reverse=True)
     for p in valid_poojas:
         p.pooja_date = format_date_long(p.pooja_date)
 
-    return render_template("pooja.html", poojas=valid_poojas, switch_url=url_for("pooja"))
+    return render_template("pooja.html", poojas=valid_poojas, switch_url=url_for("poojal"))
+
 
 @app.route('/add_pooja', methods=['GET', 'POST'])
 def add_pooja():
@@ -264,23 +240,23 @@ def add_pooja():
         return redirect(url_for('pooja'))
     return render_template('add_pooja.html', switch_url=url_for('add_poojal'))
 
+
 @app.route('/biksha')
 def biksha():
     today = date.today()
     bikshas = Biksha.query.filter(Biksha.to_date >= today).order_by(Biksha.from_date.desc()).all()
-
     for b in bikshas:
         b.from_date_str = format_date_long(b.from_date)
         b.to_date_str = format_date_long(b.to_date)
     return render_template('biksha.html', bikshas=bikshas, switch_url=url_for('bikshal'))
 
+
 @app.route('/add_biksha', methods=['GET', 'POST'])
 def add_biksha():
     if request.method == 'POST':
         from_date = datetime.strptime(request.form['from_date'], "%Y-%m-%d").date()
-        to_date_str = request.form.get('to_date') or request.form['from_date']
-        to_date = datetime.strptime(to_date_str, "%Y-%m-%d").date()
-        biksha_time = datetime.strptime(request.form['biksha_time'], "%H:%M").time()  # ✅ convert to TIME
+        to_date = datetime.strptime(request.form.get('to_date') or request.form['from_date'], "%Y-%m-%d").date()
+        biksha_time = datetime.strptime(request.form['biksha_time'], "%H:%M").time()
 
         if to_date < from_date:
             flash("To Date cannot be earlier than From Date.")
@@ -290,7 +266,7 @@ def add_biksha():
             swamy_name=request.form['swamy_name'],
             from_date=from_date,
             to_date=to_date,
-            biksha_time=biksha_time,  # ✅ TIME object
+            biksha_time=biksha_time,
             phone_number=request.form['phone_number'],
             location=request.form['location'],
             near_landmark=request.form.get('near_landmark'),
@@ -301,6 +277,7 @@ def add_biksha():
         return redirect(url_for('biksha'))
     return render_template('add_biksha.html', switch_url=url_for('bikshal'))
 
+
 @app.route('/alpaharam')
 def alpaharam():
     today = date.today()
@@ -310,13 +287,13 @@ def alpaharam():
         a.to_date_str = format_date_long(a.to_date)
     return render_template('alpaharam.html', alpaharams=alpaharams, switch_url=url_for('alpaharaml'))
 
+
 @app.route('/add_alpaharam', methods=['GET', 'POST'])
 def add_alpaharam():
     if request.method == 'POST':
         from_date = datetime.strptime(request.form['from_date'], "%Y-%m-%d").date()
-        to_date_str = request.form.get('to_date') or request.form['from_date']
-        to_date = datetime.strptime(to_date_str, "%Y-%m-%d").date()
-        biksha_time = datetime.strptime(request.form['biksha_time'], "%H:%M").time()  # ✅ convert to TIME
+        to_date = datetime.strptime(request.form.get('to_date') or request.form['from_date'], "%Y-%m-%d").date()
+        biksha_time = datetime.strptime(request.form['biksha_time'], "%H:%M").time()
 
         if to_date < from_date:
             flash("To Date cannot be earlier than From Date.")
@@ -326,7 +303,7 @@ def add_alpaharam():
             swamy_name=request.form['swamy_name'],
             from_date=from_date,
             to_date=to_date,
-            biksha_time=biksha_time,  # ✅ TIME object
+            biksha_time=biksha_time,
             phone_number=request.form['phone_number'],
             location=request.form['location'],
             near_landmark=request.form.get('near_landmark'),
@@ -334,7 +311,7 @@ def add_alpaharam():
         )
         db.session.add(new_alpaharam)
         db.session.commit()
-        return redirect(url_for('alpaharam'))
+        return redirect(url_for('alpaharaml'))
     return render_template('add_alpaharam.html', switch_url=url_for('alpaharaml'))
 
 
@@ -342,6 +319,5 @@ def add_alpaharam():
 # Run app
 # ------------------------
 if __name__ == '__main__':
-    with app.app_context():
-        db.create_all()
+    # ❗ db.create_all removed to avoid Render crash
     app.run(debug=True, host='0.0.0.0', port=int(os.environ.get('PORT', 5001)))
