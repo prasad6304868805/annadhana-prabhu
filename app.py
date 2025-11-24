@@ -2,17 +2,26 @@ import os
 from flask import Flask, render_template, request, redirect, url_for, flash
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime, date, time
+from sqlalchemy.exc import OperationalError
 
 app = Flask(__name__)
 app.secret_key = "ayyappa_secret"
 
 # ------------------------
-# Database configuration (RENDER FIX – SSL MODE REQUIRED)
+# Database configuration
 # ------------------------
 app.config['SQLALCHEMY_DATABASE_URI'] = "postgresql+psycopg://root:kVeQLihcFCQ01s876TZRS2uHQUGrSxGr@dpg-d3sijungi27c73dlpvfg-a.oregon-postgres.render.com/devotional?sslmode=require"
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['SQLALCHEMY_ENGINE_OPTIONS'] = {
+    "pool_pre_ping": True,
+    "pool_recycle": 300,
+    "pool_timeout": 30,
+    "pool_size": 5,
+    "max_overflow": 10
+}
 
 db = SQLAlchemy(app)
+
 
 # ------------------------
 # Database Models
@@ -60,14 +69,13 @@ class Alpaharam(db.Model):
 # Helper function
 # ------------------------
 def format_date_long(date_value):
-    """Format date to '25 October 2025'."""
     if not date_value:
         return ""
     try:
         if isinstance(date_value, (datetime, date)):
             return date_value.strftime("%d %B %Y")
         return datetime.strptime(str(date_value), "%Y-%m-%d").strftime("%d %B %Y")
-    except Exception:
+    except:
         return str(date_value)
 
 
@@ -82,9 +90,13 @@ def homel():
 @app.route('/poojal')
 def poojal():
     today = date.today()
-    all_poojas = Pooja.query.all()
-    valid_poojas = []
+    try:
+        all_poojas = Pooja.query.all()
+    except OperationalError:
+        db.session.close()
+        all_poojas = Pooja.query.all()
 
+    valid_poojas = []
     for p in all_poojas:
         try:
             pooja_date = datetime.strptime(p.pooja_date.strip(), "%Y-%m-%d").date()
@@ -93,7 +105,11 @@ def poojal():
         except:
             continue
 
-    valid_poojas.sort(key=lambda x: datetime.strptime(x.pooja_date.strip(), "%Y-%m-%d").date(), reverse=True)
+    valid_poojas.sort(
+        key=lambda x: datetime.strptime(x.pooja_date.strip(), "%Y-%m-%d").date(),
+        reverse=True
+    )
+
     for p in valid_poojas:
         p.pooja_date = format_date_long(p.pooja_date)
 
@@ -133,12 +149,9 @@ def bikshal():
 def add_bikshal():
     if request.method == 'POST':
         from_date = datetime.strptime(request.form['from_date'], "%Y-%m-%d").date()
-        to_date = datetime.strptime(request.form.get('to_date') or request.form['from_date'], "%Y-%m-%d").date()
+        to_date_str = request.form.get('to_date') or request.form['from_date']
+        to_date = datetime.strptime(to_date_str, "%Y-%m-%d").date()
         biksha_time = datetime.strptime(request.form['biksha_time'], "%H:%M").time()
-
-        if to_date < from_date:
-            flash("To Date cannot be earlier than From Date.")
-            return redirect(url_for('add_bikshal'))
 
         new_biksha = Biksha(
             swamy_name=request.form['swamy_name'],
@@ -170,12 +183,9 @@ def alpaharaml():
 def add_alpaharaml():
     if request.method == 'POST':
         from_date = datetime.strptime(request.form['from_date'], "%Y-%m-%d").date()
-        to_date = datetime.strptime(request.form.get('to_date') or request.form['from_date'], "%Y-%m-%d").date()
+        to_date_str = request.form.get('to_date') or request.form['from_date']
+        to_date = datetime.strptime(to_date_str, "%Y-%m-%d").date()
         biksha_time = datetime.strptime(request.form['biksha_time'], "%H:%M").time()
-
-        if to_date < from_date:
-            flash("To Date cannot be earlier than From Date.")
-            return redirect(url_for('add_alpaharaml'))
 
         new_alpaharam = Alpaharam(
             swamy_name=request.form['swamy_name'],
@@ -204,9 +214,13 @@ def home():
 @app.route('/pooja')
 def pooja():
     today = date.today()
-    all_poojas = Pooja.query.all()
-    valid_poojas = []
+    try:
+        all_poojas = Pooja.query.all()
+    except OperationalError:
+        db.session.close()
+        all_poojas = Pooja.query.all()
 
+    valid_poojas = []
     for p in all_poojas:
         try:
             pooja_date = datetime.strptime(p.pooja_date.strip(), "%Y-%m-%d").date()
@@ -215,7 +229,11 @@ def pooja():
         except:
             continue
 
-    valid_poojas.sort(key=lambda x: datetime.strptime(x.pooja_date.strip(), "%Y-%m-%d").date(), reverse=True)
+    valid_poojas.sort(
+        key=lambda x: datetime.strptime(x.pooja_date.strip(), "%Y-%m-%d").date(),
+        reverse=True
+    )
+
     for p in valid_poojas:
         p.pooja_date = format_date_long(p.pooja_date)
 
@@ -255,12 +273,9 @@ def biksha():
 def add_biksha():
     if request.method == 'POST':
         from_date = datetime.strptime(request.form['from_date'], "%Y-%m-%d").date()
-        to_date = datetime.strptime(request.form.get('to_date') or request.form['from_date'], "%Y-%m-%d").date()
+        to_date_str = request.form.get('to_date') or request.form['from_date']
+        to_date = datetime.strptime(to_date_str, "%Y-%m-%d").date()
         biksha_time = datetime.strptime(request.form['biksha_time'], "%H:%M").time()
-
-        if to_date < from_date:
-            flash("To Date cannot be earlier than From Date.")
-            return redirect(url_for('add_biksha'))
 
         new_biksha = Biksha(
             swamy_name=request.form['swamy_name'],
@@ -292,12 +307,9 @@ def alpaharam():
 def add_alpaharam():
     if request.method == 'POST':
         from_date = datetime.strptime(request.form['from_date'], "%Y-%m-%d").date()
-        to_date = datetime.strptime(request.form.get('to_date') or request.form['from_date'], "%Y-%m-%d").date()
+        to_date_str = request.form.get('to_date') or request.form['from_date']
+        to_date = datetime.strptime(to_date_str, "%Y-%m-%d").date()
         biksha_time = datetime.strptime(request.form['biksha_time'], "%H:%M").time()
-
-        if to_date < from_date:
-            flash("To Date cannot be earlier than From Date.")
-            return redirect(url_for('add_alpaharam'))
 
         new_alpaharam = Alpaharam(
             swamy_name=request.form['swamy_name'],
@@ -311,7 +323,7 @@ def add_alpaharam():
         )
         db.session.add(new_alpaharam)
         db.session.commit()
-        return redirect(url_for('alpaharaml'))
+        return redirect(url_for('alpaharam'))
     return render_template('add_alpaharam.html', switch_url=url_for('alpaharaml'))
 
 
@@ -319,5 +331,6 @@ def add_alpaharam():
 # Run app
 # ------------------------
 if __name__ == '__main__':
-    # ❗ db.create_all removed to avoid Render crash
+    with app.app_context():
+        db.create_all()
     app.run(debug=True, host='0.0.0.0', port=int(os.environ.get('PORT', 5001)))
