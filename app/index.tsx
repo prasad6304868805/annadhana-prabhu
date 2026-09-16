@@ -6,7 +6,7 @@ export default function IndexScreen() {
   const router = useRouter();
 
   const handleAnimationComplete = () => {
-    router.replace('/map-placeholder');
+    router.replace('/map');
   };
 
   return (

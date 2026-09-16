@@ -64,6 +64,7 @@ export default function RootLayout() {
         }}
       >
         <Stack.Screen name="index" />
+        <Stack.Screen name="map" />
         <Stack.Screen name="map-placeholder" />
         <Stack.Screen name="splash" />
       </Stack>
