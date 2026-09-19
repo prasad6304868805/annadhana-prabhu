@@ -44,18 +44,36 @@ export const SANCTUM_COLORS = {
 } as const;
 
 export const SPLASH_TIMING = {
-  // Entrance phases
+  // Entrance phases (FIRST SHOT — existing, unchanged)
   sanctumDuration: 2200,      // Background fade-in & scale settle
   crestDelay: 600,            // Top Kalasha crest descent & fade
   crestDuration: 1200,
   flameGlowDelay: 800,        // Flame aura breathing starts
-  titleDelay: 1800,           // "ANNADHANA PRABHUVA" title reveal
-  titleDuration: 1000,
-  subtitleDelay: 2100,        // Devotional Telugu & English subtitle
-  subtitleDuration: 800,
-  hairlineDelay: 2400,        // Sacred hairline & Kshetram label
-  hairlineDuration: 600,
-  holdDuration: 800,          // Hold before exit
-  totalDuration: 3400,        // Total splash duration (~3.4s)
-  transitionDuration: 600,    // Cross-fade transition to main screen
+
+  // ── CINEMATIC EXTENSION (9–10s total) ────────────────────────────────────
+  // Phase 2 (3–6s): Camera push / darkness deepens
+  cameraPushDelay: 3000,      // When the subtle zoom/push begins
+  cameraPushDuration: 3000,   // Duration of the slow push
+
+  // Phase 3 (6–8s): Ayyappa light-reveal
+  ayyappaRevealDelay: 5500,   // When Ayyappa layer starts becoming visible
+  ayyappaRevealDuration: 2500,// Duration of the light-reveal unmask
+
+  // Phase 4 (8–9s): Hold — same temple, diya visible
+  // (gap is 1000ms hold before rack-focus)
+
+  // Phase 5 (9–10s): Rack-focus bokeh + title
+  titleDelay: 8800,           // "ANNADHANA PRABHUVA" title reveal
+  titleDuration: 900,
+  subtitleDelay: 9200,        // Devotional Telugu & English subtitle
+  subtitleDuration: 700,
+  hairlineDelay: 9500,        // Sacred hairline & Kshetram label
+  hairlineDuration: 500,
+  rackFocusDelay: 8600,       // Bokeh warmth begins
+  rackFocusDuration: 700,
+
+
+  // Transition to map
+  totalDuration: 10200,       // Total splash (~10.2s gives a short hold after title)
+  transitionDuration: 700,    // Cross-fade to Devotional Map
 } as const;
