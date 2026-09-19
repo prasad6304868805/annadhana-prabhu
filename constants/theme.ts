@@ -44,36 +44,33 @@ export const SANCTUM_COLORS = {
 } as const;
 
 export const SPLASH_TIMING = {
-  // Entrance phases (FIRST SHOT — existing, unchanged)
-  sanctumDuration: 2200,      // Background fade-in & scale settle
-  crestDelay: 600,            // Top Kalasha crest descent & fade
+  // Phase 1 (0–3s): Master diya shot — unchanged
+  sanctumDuration: 2200,      // Diya fade-in & scale settle
+  crestDelay: 600,            // Sacred crest descent
   crestDuration: 1200,
   flameGlowDelay: 800,        // Flame aura breathing starts
 
-  // ── CINEMATIC EXTENSION (9–10s total) ────────────────────────────────────
-  // Phase 2 (3–6s): Camera push / darkness deepens
-  cameraPushDelay: 3000,      // When the subtle zoom/push begins
-  cameraPushDuration: 3000,   // Duration of the slow push
+  // Phase 2 (3–5s): Same shot, subtle camera push into darkness
+  cameraPushDelay: 3000,
+  cameraPushDuration: 2000,
 
-  // Phase 3 (6–8s): Ayyappa light-reveal
-  ayyappaRevealDelay: 5500,   // When Ayyappa layer starts becoming visible
-  ayyappaRevealDuration: 2500,// Duration of the light-reveal unmask
+  // Phase 3 (5–7.5s): Radial light sphere expands from flame position
+  ayyappaRevealDelay: 5000,
+  ayyappaRevealDuration: 2500,
 
-  // Phase 4 (8–9s): Hold — same temple, diya visible
-  // (gap is 1000ms hold before rack-focus)
+  // Phase 4 (7.5–8.7s): Hold — no timing constant needed
 
-  // Phase 5 (9–10s): Rack-focus bokeh + title
-  titleDelay: 8800,           // "ANNADHANA PRABHUVA" title reveal
-  titleDuration: 900,
-  subtitleDelay: 9200,        // Devotional Telugu & English subtitle
-  subtitleDuration: 700,
-  hairlineDelay: 9500,        // Sacred hairline & Kshetram label
-  hairlineDuration: 500,
-  rackFocusDelay: 8600,       // Bokeh warmth begins
-  rackFocusDuration: 700,
+  // Phase 5 (8.7–9.5s): Rack-focus vignette + title
+  rackFocusDelay: 8700,
+  rackFocusDuration: 600,
+  titleDelay: 8900,
+  titleDuration: 800,
+  subtitleDelay: 9200,
+  subtitleDuration: 600,
+  hairlineDelay: 9450,
+  hairlineDuration: 450,
 
-
-  // Transition to map
-  totalDuration: 10200,       // Total splash (~10.2s gives a short hold after title)
-  transitionDuration: 700,    // Cross-fade to Devotional Map
+  // Exit (10s → map)
+  totalDuration: 10000,
+  transitionDuration: 700,
 } as const;
